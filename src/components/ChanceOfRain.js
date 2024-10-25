@@ -80,12 +80,13 @@ const GridLine = styled.div`
 
 const NoRainMessage = styled.p`
   position: absolute;
-  top: 50%;
+  top: 20%; // Changed from 50% to 30%
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
   color: #888;
-  font-size: 0.9rem;
+  font-size: 1.5rem;
+  z-index: 1;
 `;
 
 const ChanceOfRain = ({ selectedDayData }) => {
@@ -112,7 +113,6 @@ const ChanceOfRain = ({ selectedDayData }) => {
       });
   }, [selectedDayData]);
 
-  // Add this useEffect
   useEffect(() => {
     setKey((prevKey) => prevKey + 1);
   }, [selectedDayData]);
@@ -133,15 +133,17 @@ const ChanceOfRain = ({ selectedDayData }) => {
         <GridLine $top={maxHeight} />
         {rainData.map((data, index) => (
           <BarContainer key={`${key}-${index}`}>
-            <Bar
-              height={Math.max((data.chance / 100) * maxHeight, 1)}
-              index={index}
-            />
+            {!noChanceOfRain && (
+              <Bar
+                height={Math.max((data.chance / 100) * maxHeight, 1)}
+                index={index}
+              />
+            )}
             <Time>{data.time}</Time>
           </BarContainer>
         ))}
         {noChanceOfRain && (
-          <NoRainMessage>No chance of rain for the selected day.</NoRainMessage>
+          <NoRainMessage>You are lucky, no rain today!</NoRainMessage>
         )}
       </ChartContainer>
     </Container>
