@@ -1,21 +1,49 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React from "react";
+import styled, { keyframes } from "styled-components";
 
-import { ReactComponent as SunnyIcon } from "../assets/Sunny.svg";
-import { ReactComponent as CloudyIcon } from "../assets/Cloudy.svg";
 import { ReactComponent as RainyIcon } from "../assets/Rainy.svg";
 import { ReactComponent as ThunderstormIcon } from "../assets/Thunderstorm.svg";
 import { ReactComponent as PartlyCloudyIcon } from "../assets/PartlyCloudy.svg";
 
+import SunnyIcon from "../assets/sun.png";
+import CloudyIcon from "../assets/Cloudy.png";
+
+const float = keyframes`
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+`;
+
+const spin = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+`;
+
 const Container = styled.div`
   display: flex;
+  gap: 20px;
+`;
+
+const ForecastContainer = styled.div`
+  display: flex;
   gap: 10px;
-  height: 300px;
+  width: 100%;
+  height: 100%; // Make it full height
 `;
 
 const Card = styled.div`
   background-color: ${(props) => (props.selected ? "#4a90e2" : "#2c2c2c")};
-  border-radius: 20px;
+  border-radius: 40px;
   padding: ${(props) => (props.selected ? "20px" : "15px")};
   color: white;
   flex: ${(props) => (props.selected ? 3 : 1)};
@@ -24,6 +52,7 @@ const Card = styled.div`
   justify-content: ${(props) => (props.selected ? "space-between" : "center")};
   cursor: pointer;
   transition: all 0.3s ease;
+  height: 100%; // Make cards full height
 
   &:hover {
     background-color: ${(props) => (props.selected ? "#4a90e2" : "#3c3c3c")};
@@ -68,10 +97,17 @@ const Day = styled.h3`
 const WeatherIconWrapper = styled.div`
   width: ${(props) => (props.current ? "80px" : "50px")};
   height: ${(props) => (props.current ? "80px" : "50px")};
+  animation: ${float} 3s ease-in-out infinite;
+  img,
   svg {
     width: 100%;
     height: 100%;
+    object-fit: contain;
   }
+`;
+
+const SunIcon = styled.img`
+  animation: ${spin} 20s linear infinite;
 `;
 
 const Temperature = styled.p`
@@ -80,23 +116,27 @@ const Temperature = styled.p`
   font-weight: bold;
 `;
 
-const Details = styled.div`
-  font-size: 1rem;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-`;
-
 const DetailRow = styled.p`
   margin: 0;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const DetailLabel = styled.span`
+  color: inherit;
+`;
+
+const DetailValue = styled.span`
+  color: black;
+  font-weight: bold;
 `;
 
 const getWeatherIcon = (condition) => {
   switch (condition) {
     case "Clear":
-      return SunnyIcon;
+      return (props) => <SunIcon src={SunnyIcon} alt="Sunny" {...props} />;
     case "Clouds":
-      return CloudyIcon;
+      return (props) => <img src={CloudyIcon} alt="Cloudy" {...props} />;
     case "Rain":
       return RainyIcon;
     case "Thunderstorm":
@@ -114,8 +154,13 @@ const SmallCard = styled.div`
   height: 100%;
 `;
 
-function WeatherForecast({ currentWeather, forecast }) {
-  const [selectedDay, setSelectedDay] = useState(0);
+const WeatherForecast = ({
+  currentWeather = null,
+  forecast = [],
+  onDaySelect = () => {},
+}) => {
+  console.log("WeatherForecast rendering");
+  const [selectedDay, setSelectedDay] = React.useState(0);
   const currentDate = new Date();
   const weekDays = [
     "Sunday",
@@ -127,14 +172,22 @@ function WeatherForecast({ currentWeather, forecast }) {
     "Saturday",
   ];
 
+  const handleDaySelect = (index) => {
+    setSelectedDay(index);
+    if (typeof onDaySelect === "function") {
+      onDaySelect(index);
+    }
+  };
+
   const renderDayCard = (day, index) => {
     const isSelected = selectedDay === index;
+    const WeatherIcon = getWeatherIcon(day.weather[0].main);
 
     return (
       <Card
         key={index}
         selected={isSelected}
-        onClick={() => setSelectedDay(index)}
+        onClick={() => handleDaySelect(index)}
       >
         {isSelected ? (
           <CurrentDayInfo>
@@ -144,16 +197,26 @@ function WeatherForecast({ currentWeather, forecast }) {
             <MiddleRow>
               <Temperature current>{Math.round(day.main.temp)}°</Temperature>
               <WeatherIconWrapper current>
-                {React.createElement(getWeatherIcon(day.weather[0].main))}
+                <WeatherIcon />
               </WeatherIconWrapper>
             </MiddleRow>
             <BottomRow>
               <DetailRow>
-                Real Feel: {Math.round(day.main.feels_like)}°
+                <DetailLabel>Real Feel:</DetailLabel>
+                <DetailValue>{Math.round(day.main.feels_like)}°</DetailValue>
               </DetailRow>
-              <DetailRow>Wind: {day.wind.speed} km/h</DetailRow>
-              <DetailRow>Pressure: {day.main.pressure} MB</DetailRow>
-              <DetailRow>Humidity: {day.main.humidity}%</DetailRow>
+              <DetailRow>
+                <DetailLabel>Wind:</DetailLabel>
+                <DetailValue>{day.wind.speed} km/h</DetailValue>
+              </DetailRow>
+              <DetailRow>
+                <DetailLabel>Pressure:</DetailLabel>
+                <DetailValue>{day.main.pressure} MB</DetailValue>
+              </DetailRow>
+              <DetailRow>
+                <DetailLabel>Humidity:</DetailLabel>
+                <DetailValue>{day.main.humidity}%</DetailValue>
+              </DetailRow>
             </BottomRow>
           </CurrentDayInfo>
         ) : (
@@ -162,7 +225,7 @@ function WeatherForecast({ currentWeather, forecast }) {
               {weekDays[(currentDate.getDay() + index) % 7].slice(0, 3)}
             </Day>
             <WeatherIconWrapper>
-              {React.createElement(getWeatherIcon(day.weather[0].main))}
+              <WeatherIcon />
             </WeatherIconWrapper>
             <Temperature>{Math.round(day.main.temp)}°</Temperature>
           </SmallCard>
@@ -171,13 +234,18 @@ function WeatherForecast({ currentWeather, forecast }) {
     );
   };
 
+  const selectedDayData = React.useMemo(() => {
+    const allDays = [currentWeather, ...forecast.slice(0, 5)];
+    return allDays[selectedDay] || null;
+  }, [currentWeather, forecast, selectedDay]);
+
   return (
-    <Container>
+    <ForecastContainer>
       {[currentWeather, ...forecast.slice(0, 5)].map((day, index) =>
         renderDayCard(day, index)
       )}
-    </Container>
+    </ForecastContainer>
   );
-}
+};
 
-export default WeatherForecast;
+export default React.memo(WeatherForecast);

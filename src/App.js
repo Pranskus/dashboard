@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import GlobalStyles from "./GlobalStyles";
 import Header from "./components/Header";
-import WeatherForecast from "./components/WeatherForecast";
-import ChanceOfRain from "./components/ChanceOfRain";
+import WeatherDashboard from "./components/WeatherDashboard";
 
 const AppContainer = styled.div`
   font-family: Arial, sans-serif;
@@ -21,75 +20,75 @@ const MainContent = styled.div`
   flex-direction: column;
   gap: 20px;
   padding: 20px;
-  max-width: 1200px;
-  width: 100%;
+  max-width: auto;
+  width: 80%;
   margin: 0 auto;
 `;
 
-const ForecastRow = styled.div`
-  display: flex;
-  gap: 20px;
-`;
-
-const ForecastColumn = styled.div`
-  flex: 3;
-`;
-
-const ChanceOfRainColumn = styled.div`
-  flex: 2;
-`;
-
 function App() {
-  const [currentWeather, setCurrentWeather] = useState(null);
-  const [forecast, setForecast] = useState(null);
+  const [weatherData, setWeatherData] = useState({
+    currentWeather: null,
+    forecast: null,
+  });
+  const [city, setCity] = useState("Vilnius,LT");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const fetchWeatherData = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const API_KEY = process.env.REACT_APP_OPENWEATHERMAP_API_KEY;
+      if (!API_KEY) {
+        throw new Error("API key is undefined");
+      }
+      const currentResponse = await axios.get(
+        `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`
+      );
+      const forecastResponse = await axios.get(
+        `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=metric`
+      );
+      // Filter forecast data to get one entry per day
+      const dailyForecast = forecastResponse.data.list.filter(
+        (entry, index) => index % 8 === 0
+      );
+      setWeatherData({
+        currentWeather: currentResponse.data,
+        forecast: dailyForecast,
+      });
+    } catch (error) {
+      console.error("Error fetching weather data:", error);
+      setError("Failed to fetch weather data. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  }, [city]);
 
   useEffect(() => {
-    const fetchWeatherData = async () => {
-      try {
-        const API_KEY = process.env.REACT_APP_OPENWEATHERMAP_API_KEY;
-        if (!API_KEY) {
-          throw new Error("API key is undefined");
-        }
-        const currentResponse = await axios.get(
-          `https://api.openweathermap.org/data/2.5/weather?q=Vilnius,LT&appid=${API_KEY}&units=metric`
-        );
-        setCurrentWeather(currentResponse.data);
-
-        const forecastResponse = await axios.get(
-          `https://api.openweathermap.org/data/2.5/forecast?q=Vilnius,LT&appid=${API_KEY}&units=metric`
-        );
-        // Filter forecast data to get one entry per day
-        const dailyForecast = forecastResponse.data.list.filter(
-          (entry, index) => index % 8 === 0
-        );
-        setForecast(dailyForecast);
-      } catch (error) {
-        console.error("Error fetching weather data:", error);
-      }
-    };
-
     fetchWeatherData();
-  }, []);
+  }, [fetchWeatherData]);
+
+  const handleSearch = (searchTerm) => {
+    setCity(searchTerm);
+  };
 
   return (
     <>
       <GlobalStyles />
       <AppContainer>
-        <Header />
+        <Header onSearch={handleSearch} currentCity={city} />
         <MainContent>
-          <ForecastRow>
-            <ForecastColumn>
-              {currentWeather && forecast && (
-                <WeatherForecast
-                  currentWeather={currentWeather}
-                  forecast={forecast}
-                />
-              )}
-            </ForecastColumn>
-            <ChanceOfRainColumn>
-              <ChanceOfRain />
-            </ChanceOfRainColumn>
-          </ForecastRow>
+          {loading && <p>Loading...</p>}
+          {error && <p>{error}</p>}
+          {!loading &&
+            !error &&
+            weatherData.currentWeather &&
+            weatherData.forecast && (
+              <WeatherDashboard
+                currentWeather={weatherData.currentWeather}
+                forecast={weatherData.forecast}
+              />
+            )}
         </MainContent>
       </AppContainer>
     </>
