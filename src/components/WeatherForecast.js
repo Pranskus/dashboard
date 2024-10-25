@@ -10,13 +10,13 @@ import { ReactComponent as PartlyCloudyIcon } from "../assets/PartlyCloudy.svg";
 const Container = styled.div`
   display: flex;
   gap: 10px;
-  height: 400px;
+  height: 300px;
 `;
 
 const Card = styled.div`
   background-color: ${(props) => (props.selected ? "#4a90e2" : "#2c2c2c")};
   border-radius: 20px;
-  padding: ${(props) => (props.selected ? "30px" : "15px")};
+  padding: ${(props) => (props.selected ? "20px" : "15px")};
   color: white;
   flex: ${(props) => (props.selected ? 3 : 1)};
   display: flex;
@@ -32,35 +32,42 @@ const Card = styled.div`
 
 const CurrentDayInfo = styled.div`
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 20px;
-`;
-
-const LeftColumn = styled.div`
-  display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
 `;
 
-const RightColumn = styled.div`
-  text-align: right;
+const TopRow = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: -10px;
+`;
+
+const MiddleRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 0;
+`;
+
+const BottomRow = styled.div`
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  font-size: 12px;
+  gap: 10px;
 `;
 
 const Day = styled.h3`
   margin: 0;
-  font-size: ${(props) => (props.current ? "2rem" : "1.2rem")};
-  font-weight: ${(props) => (props.current ? "bold" : "normal")};
-`;
-
-const Time = styled.p`
-  margin: 5px 0 0;
-  font-size: 1.2rem;
-  opacity: 0.8;
+  font-size: ${(props) => (props.current ? "2.5rem" : "1.5rem")};
+  font-weight: bold;
+  text-align: center;
 `;
 
 const WeatherIconWrapper = styled.div`
-  width: ${(props) => (props.current ? "100px" : "50px")};
-  height: ${(props) => (props.current ? "100px" : "50px")};
+  width: ${(props) => (props.current ? "80px" : "50px")};
+  height: ${(props) => (props.current ? "80px" : "50px")};
   svg {
     width: 100%;
     height: 100%;
@@ -68,8 +75,8 @@ const WeatherIconWrapper = styled.div`
 `;
 
 const Temperature = styled.p`
-  font-size: ${(props) => (props.current ? "5rem" : "2rem")};
-  margin: 10px 0;
+  font-size: ${(props) => (props.current ? "4rem" : "2rem")};
+  margin: 0;
   font-weight: bold;
 `;
 
@@ -99,13 +106,30 @@ const getWeatherIcon = (condition) => {
   }
 };
 
+const SmallCard = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+`;
+
 function WeatherForecast({ currentWeather, forecast }) {
   const [selectedDay, setSelectedDay] = useState(0);
   const currentDate = new Date();
-  const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const weekDays = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
 
   const renderDayCard = (day, index) => {
     const isSelected = selectedDay === index;
+
     return (
       <Card
         key={index}
@@ -113,37 +137,35 @@ function WeatherForecast({ currentWeather, forecast }) {
         onClick={() => setSelectedDay(index)}
       >
         {isSelected ? (
-          <>
-            <CurrentDayInfo>
-              <LeftColumn>
-                <Day current>
-                  {weekDays[(currentDate.getDay() + index) % 7]}
-                </Day>
-                <Temperature current>{Math.round(day.main.temp)}°</Temperature>
-              </LeftColumn>
-              <RightColumn>
-                <WeatherIconWrapper current>
-                  {React.createElement(getWeatherIcon(day.weather[0].main))}
-                </WeatherIconWrapper>
-              </RightColumn>
-            </CurrentDayInfo>
-            <Details>
+          <CurrentDayInfo>
+            <TopRow>
+              <Day current>{weekDays[(currentDate.getDay() + index) % 7]}</Day>
+            </TopRow>
+            <MiddleRow>
+              <Temperature current>{Math.round(day.main.temp)}°</Temperature>
+              <WeatherIconWrapper current>
+                {React.createElement(getWeatherIcon(day.weather[0].main))}
+              </WeatherIconWrapper>
+            </MiddleRow>
+            <BottomRow>
               <DetailRow>
                 Real Feel: {Math.round(day.main.feels_like)}°
               </DetailRow>
               <DetailRow>Wind: {day.wind.speed} km/h</DetailRow>
               <DetailRow>Pressure: {day.main.pressure} MB</DetailRow>
               <DetailRow>Humidity: {day.main.humidity}%</DetailRow>
-            </Details>
-          </>
+            </BottomRow>
+          </CurrentDayInfo>
         ) : (
-          <>
-            <Day>{weekDays[(currentDate.getDay() + index) % 7]}</Day>
+          <SmallCard>
+            <Day>
+              {weekDays[(currentDate.getDay() + index) % 7].slice(0, 3)}
+            </Day>
             <WeatherIconWrapper>
               {React.createElement(getWeatherIcon(day.weather[0].main))}
             </WeatherIconWrapper>
             <Temperature>{Math.round(day.main.temp)}°</Temperature>
-          </>
+          </SmallCard>
         )}
       </Card>
     );
