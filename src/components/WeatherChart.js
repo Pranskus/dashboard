@@ -24,55 +24,55 @@ const BarChartContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  flex: 1; // Changed to fill remaining space
+  height: 200px;
   gap: 15px;
   margin-top: 10px;
+  padding: 20px 0; // Add padding for temperature labels
 `;
 
 const BarGroup = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
   flex: 1;
-  width: 100%;
+  min-width: 40px; // Ensure minimum width for bars
 `;
 
 const Bar = styled.div`
-  width: 40px; // Fixed width for bars
+  width: 100%;
+  max-width: 40px;
   background: linear-gradient(180deg, #4a90e2 0%, #357abd 100%);
   border-radius: 8px;
   transition: height 0.3s ease;
   min-height: 4px;
-  height: ${(props) => props.height}%;
-
-  &:hover {
-    background: linear-gradient(180deg, #5a9fe2 0%, #458acd 100%);
-    transform: scaleY(1.05);
-  }
-`;
-
-const DayLabel = styled.span`
-  font-size: 0.9rem;
-  color: #8e9eab;
+  height: ${(props) => `${Math.max(4, props.height)}px`};
 `;
 
 const Temperature = styled.span`
   font-size: 0.9rem;
   color: white;
   font-weight: bold;
+  margin-bottom: 8px;
+`;
+
+const DayLabel = styled.span`
+  font-size: 0.9rem;
+  color: #8e9eab;
+  margin-top: 8px;
 `;
 
 const WeatherChart = ({ forecast, hideTitle }) => {
+  const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const currentDate = new Date();
+
   // Find min and max temperatures for scaling
   const temperatures = forecast.map((day) => day.main.temp);
   const maxTemp = Math.max(...temperatures);
   const minTemp = Math.min(...temperatures);
   const range = maxTemp - minTemp;
 
-  // Get day names
-  const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-  const currentDate = new Date();
+  console.log("Temperatures:", temperatures);
+  console.log("Max:", maxTemp, "Min:", minTemp, "Range:", range);
 
   return (
     <>
@@ -80,9 +80,12 @@ const WeatherChart = ({ forecast, hideTitle }) => {
       <ChartContainer>
         <BarChartContainer>
           {forecast.map((day, index) => {
-            // Calculate bar height percentage based on temperature
             const heightPercentage =
-              ((day.main.temp - minTemp) / range) * 80 + 20; // 20% minimum height
+              range === 0 ? 100 : ((day.main.temp - minTemp) / range) * 200; // Scale to match container height
+
+            console.log(
+              `Temperature: ${day.main.temp}°, Height: ${heightPercentage}%`
+            );
 
             return (
               <BarGroup key={index}>
