@@ -11,11 +11,12 @@ const DashboardContainer = styled.div`
 `;
 
 const ForecastContainer = styled.div`
-  height: 300px;
+  height: 400px;
 `;
 
 const CelestialContainer = styled.div`
   height: 200px;
+  margin-top: 100px;
 `;
 
 const WeatherDashboard = React.memo(({ currentWeather, forecast }) => {

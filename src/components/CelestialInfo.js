@@ -11,7 +11,7 @@ const glow = keyframes`
 const Container = styled.div`
   background: linear-gradient(135deg, #1e2130 0%, #2c3e50 100%);
   border-radius: 25px;
-  padding: 25px;
+  padding: 20px;
   color: white;
   display: grid;
   grid-template-columns: repeat(2, 1fr);

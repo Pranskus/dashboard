@@ -36,15 +36,18 @@ const Container = styled.div`
 
 const ForecastContainer = styled.div`
   display: flex;
-  gap: 10px;
+  gap: 20px;
   width: 100%;
-  height: 100%; // Make it full height
+  height: 100%;
 `;
 
 const Card = styled.div`
-  background-color: ${(props) => (props.selected ? "#4a90e2" : "#2c2c2c")};
-  border-radius: 40px;
-  padding: ${(props) => (props.selected ? "20px" : "15px")};
+  background: ${(props) =>
+    props.selected
+      ? "linear-gradient(135deg, #4a90e2 0%, #357abd 100%)"
+      : "linear-gradient(135deg, #1e2130 0%, #2c3e50 100%)"};
+  border-radius: 25px;
+  padding: ${(props) => (props.selected ? "25px" : "20px")};
   color: white;
   flex: ${(props) => (props.selected ? 3 : 1)};
   display: flex;
@@ -52,10 +55,16 @@ const Card = styled.div`
   justify-content: ${(props) => (props.selected ? "space-between" : "center")};
   cursor: pointer;
   transition: all 0.3s ease;
-  height: 100%; // Make cards full height
+  height: 100%;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 
   &:hover {
-    background-color: ${(props) => (props.selected ? "#4a90e2" : "#3c3c3c")};
+    transform: translateY(-5px);
+    background: ${(props) =>
+      props.selected
+        ? "linear-gradient(135deg, #4a90e2 0%, #357abd 100%)"
+        : "linear-gradient(135deg, #2c3e50 0%, #3d5167 100%)"};
   }
 `;
 
@@ -83,21 +92,37 @@ const MiddleRow = styled.div`
 const BottomRow = styled.div`
   display: grid;
   grid-template-columns: repeat(1, 1fr);
-  font-size: 12px;
   gap: 10px;
+  background: rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  border-radius: 20px;
 `;
 
 const Day = styled.h3`
   margin: 0;
-  font-size: ${(props) => (props.current ? "2.5rem" : "1.5rem")};
+  font-size: ${(props) => (props.current ? "2rem" : "1.2rem")};
   font-weight: bold;
   text-align: center;
+  color: #8e9eab;
 `;
 
 const WeatherIconWrapper = styled.div`
   width: ${(props) => (props.current ? "80px" : "50px")};
   height: ${(props) => (props.current ? "80px" : "50px")};
   animation: ${float} 3s ease-in-out infinite;
+  background: rgba(74, 144, 226, 0.1);
+  border-radius: 50%;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(74, 144, 226, 0.2);
+    transform: rotate(360deg);
+  }
+
   img,
   svg {
     width: 100%;
@@ -111,24 +136,51 @@ const SunIcon = styled.img`
 `;
 
 const Temperature = styled.p`
-  font-size: ${(props) => (props.current ? "4rem" : "2rem")};
+  font-size: ${(props) => (props.current ? "3.5rem" : "1.8rem")};
   margin: 0;
   font-weight: bold;
+  color: white;
 `;
 
 const DetailRow = styled.p`
   margin: 0;
   display: flex;
   justify-content: space-between;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 10px 15px;
+  border-radius: 15px;
+  transition: background 0.3s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
 `;
 
 const DetailLabel = styled.span`
-  color: inherit;
+  color: #8e9eab;
+  font-size: 0.9rem;
 `;
 
 const DetailValue = styled.span`
-  color: black;
+  color: white;
   font-weight: bold;
+`;
+
+const SmallCard = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  gap: 15px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  transition: background 0.3s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
 `;
 
 const getWeatherIcon = (condition) => {
@@ -158,14 +210,6 @@ const getWeatherIcon = (condition) => {
   // Default case
   return PartlyCloudyIcon;
 };
-
-const SmallCard = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  height: 100%;
-`;
 
 const WeatherForecast = ({
   currentWeather = null,
