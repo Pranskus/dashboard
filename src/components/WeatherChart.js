@@ -5,6 +5,7 @@ const Title = styled.h2`
   color: white;
   font-size: 1.5rem;
   margin: 0;
+  padding: 0 10px; // Remove this padding
 `;
 
 const ChartContainer = styled.div`

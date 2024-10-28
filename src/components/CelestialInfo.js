@@ -113,6 +113,7 @@ const Title = styled.h2`
   color: white;
   margin: 0 0 0 0;
   font-size: 1.5rem;
+  padding: 0 10px; // Remove this padding
 `;
 
 const CompassCard = styled(InfoCard)`

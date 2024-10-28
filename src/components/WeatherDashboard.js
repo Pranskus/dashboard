@@ -57,6 +57,8 @@ const Title = styled.h2`
   margin: 0;
   font-size: 1.2rem;
   color: #white;
+  padding: 0 10px; // Remove this padding
+  margin-bottom: 10px;
 `;
 
 const WeatherDashboard = React.memo(({ currentWeather, forecast }) => {
