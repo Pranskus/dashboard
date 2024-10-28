@@ -7,6 +7,12 @@ import { ReactComponent as PartlyCloudyIcon } from "../assets/PartlyCloudy.svg";
 import { ReactComponent as CloudyIcon } from "../assets/Cloudy.svg";
 import { ReactComponent as SunIcon } from "../assets/Sunny.svg";
 
+import clearSkyBg from "../assets/clear-sky.jpg";
+import cloudyBg from "../assets/cloudy.jpeg";
+import rainyBg from "../assets/rainy.jpg";
+import stormBg from "../assets/storm.jpeg";
+import partlyCloudyBg from "../assets/partly-cloudy.jpg";
+
 const float = keyframes`
   0% {
     transform: translateY(0px);
@@ -19,38 +25,34 @@ const float = keyframes`
   }
 `;
 
-const spin = keyframes`
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-`;
-
-const Container = styled.div`
-  display: flex;
-  gap: 20px;
-`;
-
 const ForecastContainer = styled.div`
   display: flex;
   gap: 20px;
   width: 100%;
   height: 100%;
-
   padding: 20px;
   border-radius: 25px;
-  overflow: hidden; // Prevent overflow
+  overflow: hidden;
+
+  ${(props) =>
+    props.singleDay &&
+    `
+    & > div {
+      width: 100%;
+      flex: 1;
+    }
+  `}
 `;
 
 const Card = styled.div`
-  background: ${
-    (props) =>
-      props.selected
-        ? "linear-gradient(135deg, #4a90e2 0%, #357abd 100%)"
-        : "rgba(255, 255, 255, 0.05)" // Remove background, just use container's background
-  };
+  background: ${(props) => {
+    if (props.selected) {
+      return `linear-gradient(rgba(74, 144, 226, 0.4), rgba(53, 122, 189, 0.9)), url(${props.bgImage})`; // Reduced opacity here
+    }
+    return "rgba(255, 255, 255, 0.05)";
+  }};
+  background-size: cover;
+  background-position: center;
   border-radius: 25px;
   padding: ${(props) => (props.selected ? "25px" : "20px")};
   color: white;
@@ -61,13 +63,20 @@ const Card = styled.div`
   cursor: pointer;
   transition: all 0.3s ease;
   max-height: 100%;
+  position: relative;
+  overflow: hidden;
 
   &:hover {
     transform: translateY(-5px);
-    background: ${(props) =>
-      props.selected
-        ? "linear-gradient(135deg, #4a90e2 0%, #357abd 100%)"
-        : "rgba(200, 200, 200, 0.05)"};
+    background: ${(props) => {
+      if (props.selected) {
+        return `linear-gradient(rgba(74, 144, 226, 0.5), rgba(53, 122, 189, 0.9)), url(${props.bgImage})`; // Slightly more opaque on hover
+      }
+      return "rgba(200, 200, 200, 0.05)";
+    }};
+    background-size: cover;
+    background-position: center;
+  }
 `;
 
 const CurrentDayInfo = styled.div`
@@ -139,13 +148,13 @@ const DetailRow = styled.p`
   margin: 0;
   display: flex;
   justify-content: space-between;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(50, 50, 50, 0.2);
   padding: 10px 15px;
   border-radius: 15px;
   transition: background 0.3s ease;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(50, 50, 50, 0.6);
   }
 `;
 
@@ -197,6 +206,23 @@ const getWeatherIcon = (condition) => {
   return PartlyCloudyIcon;
 };
 
+const getBackgroundImage = (condition) => {
+  if (!condition) return partlyCloudyBg;
+
+  const conditions = condition.toLowerCase();
+  if (conditions.includes("rain")) return rainyBg;
+  if (conditions.includes("storm") || conditions.includes("thunder"))
+    return stormBg;
+  if (conditions.includes("cloudy") || conditions.includes("overcast"))
+    return cloudyBg;
+  if (conditions.includes("partly") || conditions.includes("partially"))
+    return partlyCloudyBg;
+  if (conditions.includes("clear") || conditions.includes("sunny"))
+    return clearSkyBg;
+
+  return partlyCloudyBg; // default
+};
+
 const TitleBar = styled.div`
   display: flex;
   justify-content: space-between;
@@ -243,9 +269,8 @@ const WeatherForecast = ({
   forecast = [],
   onDaySelect = () => {},
 }) => {
-  console.log("WeatherForecast rendering");
   const [selectedDay, setSelectedDay] = React.useState(0);
-  const [forecastType, setForecastType] = React.useState("today"); // Add this state
+  const [forecastType, setForecastType] = React.useState("7days");
   const currentDate = new Date();
   const weekDays = [
     "Sunday",
@@ -264,15 +289,32 @@ const WeatherForecast = ({
     }
   };
 
+  // Modify renderDayCard to handle visibility
   const renderDayCard = (day, index) => {
-    const isSelected = selectedDay === index;
+    // Hide other cards when showing today or tomorrow
+    if (forecastType === "today" && index !== 0) return null;
+    if (forecastType === "tomorrow" && index !== 1) return null;
+
+    const isSelected =
+      forecastType === "today"
+        ? index === 0
+        : forecastType === "tomorrow"
+          ? index === 1
+          : selectedDay === index;
     const WeatherIcon = getWeatherIcon(day.weather[0].main);
+    const backgroundImage = getBackgroundImage(day.weather[0].main);
 
     return (
       <Card
         key={index}
         selected={isSelected}
         onClick={() => handleDaySelect(index)}
+        bgImage={backgroundImage}
+        style={{
+          backgroundImage: isSelected
+            ? `linear-gradient(rgba(74, 144, 226, 0.4), rgba(53, 122, 189, 0.6)), url(${backgroundImage})`
+            : "none",
+        }}
       >
         {isSelected ? (
           <CurrentDayInfo>
@@ -319,11 +361,6 @@ const WeatherForecast = ({
     );
   };
 
-  const selectedDayData = React.useMemo(() => {
-    const allDays = [currentWeather, ...forecast.slice(0, 7)];
-    return allDays[selectedDay] || null;
-  }, [currentWeather, forecast, selectedDay]);
-
   return (
     <div>
       <TitleBar>
@@ -331,13 +368,19 @@ const WeatherForecast = ({
         <ButtonGroup>
           <ForecastButton
             active={forecastType === "today"}
-            onClick={() => setForecastType("today")}
+            onClick={() => {
+              setForecastType("today");
+              setSelectedDay(0);
+            }}
           >
             Today
           </ForecastButton>
           <ForecastButton
             active={forecastType === "tomorrow"}
-            onClick={() => setForecastType("tomorrow")}
+            onClick={() => {
+              setForecastType("tomorrow");
+              setSelectedDay(1);
+            }}
           >
             Tomorrow
           </ForecastButton>
@@ -349,7 +392,9 @@ const WeatherForecast = ({
           </ForecastButton>
         </ButtonGroup>
       </TitleBar>
-      <ForecastContainer>
+      <ForecastContainer
+        singleDay={forecastType === "today" || forecastType === "tomorrow"}
+      >
         {[currentWeather, ...forecast.slice(0, 6)].map((day, index) =>
           renderDayCard(day, index)
         )}
