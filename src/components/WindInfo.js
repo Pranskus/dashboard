@@ -3,12 +3,6 @@ import styled, { keyframes } from "styled-components";
 import { WiStrongWind, WiWindDeg } from "react-icons/wi";
 import { FaLocationArrow } from "react-icons/fa";
 
-const glow = keyframes`
-  0% { box-shadow: 0 0 5px rgba(74, 144, 226, 0.3); }
-  50% { box-shadow: 0 0 20px rgba(74, 144, 226, 0.6); }
-  100% { box-shadow: 0 0 5px rgba(74, 144, 226, 0.3); }
-`;
-
 const rotate = keyframes`
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
@@ -22,9 +16,6 @@ const Container = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
-  animation: ${glow} 3s infinite;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
 `;
 
 const InfoCard = styled.div`

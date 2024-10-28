@@ -2,12 +2,6 @@ import React from "react";
 import styled, { keyframes } from "styled-components";
 import { WiSunrise, WiSunset, WiMoonAltNew, WiDaySunny } from "react-icons/wi";
 
-const glow = keyframes`
-  0% { box-shadow: 0 0 5px rgba(74, 144, 226, 0.3); }
-  50% { box-shadow: 0 0 20px rgba(74, 144, 226, 0.6); }
-  100% { box-shadow: 0 0 5px rgba(74, 144, 226, 0.3); }
-`;
-
 const Container = styled.div`
   background: linear-gradient(135deg, #1e2130 0%, #2c3e50 100%);
   border-radius: 25px;
@@ -16,9 +10,6 @@ const Container = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
-  animation: ${glow} 3s infinite;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
 `;
 
 const InfoCard = styled.div`

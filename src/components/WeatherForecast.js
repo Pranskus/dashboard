@@ -7,12 +7,6 @@ import { ReactComponent as PartlyCloudyIcon } from "../assets/PartlyCloudy.svg";
 import { ReactComponent as CloudyIcon } from "../assets/Cloudy.svg";
 import { ReactComponent as SunIcon } from "../assets/Sunny.svg";
 
-const glow = keyframes`
-  0% { box-shadow: 0 0 5px rgba(74, 144, 226, 0.3); }
-  50% { box-shadow: 0 0 20px rgba(74, 144, 226, 0.6); }
-  100% { box-shadow: 0 0 5px rgba(74, 144, 226, 0.3); }
-`;
-
 const float = keyframes`
   0% {
     transform: translateY(0px);
@@ -42,14 +36,11 @@ const Container = styled.div`
 const ForecastContainer = styled.div`
   display: flex;
   gap: 20px;
-  width: 98%;
+  width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #1e2130 0%, #2c3e50 100%);
+
   padding: 20px;
   border-radius: 25px;
-  animation: ${glow} 3s infinite;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
   overflow: hidden; // Prevent overflow
 `;
 
@@ -206,6 +197,47 @@ const getWeatherIcon = (condition) => {
   return PartlyCloudyIcon;
 };
 
+const TitleBar = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 0 10px;
+`;
+
+const Title = styled.h2`
+  color: #4a90e2;
+  margin: 0;
+  font-size: 1.5rem;
+`;
+
+const ButtonGroup = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+
+const ForecastButton = styled.button`
+  background: ${(props) =>
+    props.active
+      ? "linear-gradient(135deg, #4a90e2 0%, #357abd 100%)"
+      : "transparent"};
+  border: 1px solid
+    ${(props) => (props.active ? "#4a90e2" : "rgba(255, 255, 255, 0.1)")};
+  color: ${(props) => (props.active ? "white" : "#8e9eab")};
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: ${(props) =>
+      props.active
+        ? "linear-gradient(135deg, #4a90e2 0%, #357abd 100%)"
+        : "rgba(74, 144, 226, 0.1)"};
+    color: white;
+  }
+`;
+
 const WeatherForecast = ({
   currentWeather = null,
   forecast = [],
@@ -213,6 +245,7 @@ const WeatherForecast = ({
 }) => {
   console.log("WeatherForecast rendering");
   const [selectedDay, setSelectedDay] = React.useState(0);
+  const [forecastType, setForecastType] = React.useState("today"); // Add this state
   const currentDate = new Date();
   const weekDays = [
     "Sunday",
@@ -292,11 +325,36 @@ const WeatherForecast = ({
   }, [currentWeather, forecast, selectedDay]);
 
   return (
-    <ForecastContainer>
-      {[currentWeather, ...forecast.slice(0, 6)].map((day, index) =>
-        renderDayCard(day, index)
-      )}
-    </ForecastContainer>
+    <div>
+      <TitleBar>
+        <Title>Weather Forecast</Title>
+        <ButtonGroup>
+          <ForecastButton
+            active={forecastType === "today"}
+            onClick={() => setForecastType("today")}
+          >
+            Today
+          </ForecastButton>
+          <ForecastButton
+            active={forecastType === "tomorrow"}
+            onClick={() => setForecastType("tomorrow")}
+          >
+            Tomorrow
+          </ForecastButton>
+          <ForecastButton
+            active={forecastType === "7days"}
+            onClick={() => setForecastType("7days")}
+          >
+            Next 7 Days
+          </ForecastButton>
+        </ButtonGroup>
+      </TitleBar>
+      <ForecastContainer>
+        {[currentWeather, ...forecast.slice(0, 6)].map((day, index) =>
+          renderDayCard(day, index)
+        )}
+      </ForecastContainer>
+    </div>
   );
 };
 
