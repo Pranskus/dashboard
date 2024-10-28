@@ -37,23 +37,65 @@ function App() {
     setLoading(true);
     setError(null);
     try {
-      const API_KEY = process.env.REACT_APP_OPENWEATHERMAP_API_KEY;
-      if (!API_KEY) {
-        throw new Error("API key is undefined");
+      const API_KEY = "6PNY9WT9YSL482LUA525EZL8L";
+      const response = await fetch(
+        `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${city}?unitGroup=metric&key=${API_KEY}&contentType=json`
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch weather data");
       }
-      const currentResponse = await axios.get(
-        `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`
-      );
-      const forecastResponse = await axios.get(
-        `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=metric`
-      );
-      // Filter forecast data to get one entry per day
-      const dailyForecast = forecastResponse.data.list.filter(
-        (entry, index) => index % 8 === 0
-      );
+
+      const data = await response.json();
+      console.log("API Response:", data);
+
       setWeatherData({
-        currentWeather: currentResponse.data,
-        forecast: dailyForecast,
+        currentWeather: {
+          main: {
+            temp: data.currentConditions.temp,
+            humidity: data.currentConditions.humidity,
+            pressure: data.currentConditions.pressure,
+            feels_like: data.currentConditions.feelslike,
+          },
+          weather: [
+            {
+              main: data.currentConditions.conditions,
+              description: data.currentConditions.conditions,
+            },
+          ],
+          wind: {
+            speed: data.currentConditions.windspeed,
+          },
+          name: data.address,
+          // Update celestial data format
+          sunrise: data.days[0].sunrise, // Get from current day
+          sunset: data.days[0].sunset, // Get from current day
+          moonphase: data.days[0].moonphase,
+          uvindex: data.currentConditions.uvindex,
+        },
+        forecast: data.days.slice(1, 8).map((day) => ({
+          dt_txt: day.datetime,
+          main: {
+            temp: day.temp,
+            humidity: day.humidity,
+            pressure: day.pressure,
+            feels_like: day.feelslike,
+          },
+          weather: [
+            {
+              main: day.conditions,
+              description: day.conditions,
+            },
+          ],
+          wind: {
+            speed: day.windspeed,
+          },
+          // Update celestial data format for forecast days
+          sunrise: day.sunrise,
+          sunset: day.sunset,
+          moonphase: day.moonphase,
+          uvindex: day.uvindex,
+        })),
       });
     } catch (error) {
       console.error("Error fetching weather data:", error);

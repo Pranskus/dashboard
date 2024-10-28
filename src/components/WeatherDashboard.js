@@ -1,34 +1,34 @@
 import React, { useState, useCallback } from "react";
 import styled from "styled-components";
 import WeatherForecast from "./WeatherForecast";
-import ChanceOfRain from "./ChanceOfRain";
+import CelestialInfo from "./CelestialInfo";
 
 const DashboardContainer = styled.div`
   display: flex;
+  flex-direction: column;
   gap: 20px;
   width: 100%;
-  height: 300px; // Set a fixed height for the dashboard
 `;
 
 const ForecastContainer = styled.div`
-  flex: 1;
-  min-width: 0; // This allows the flex item to shrink below its minimum content size
-  height: 100%; // Make it full height
+  height: 300px;
 `;
 
-const ChanceOfRainContainer = styled.div`
-  width: 300px; // Adjust this width as needed
-  flex-shrink: 0; // Prevents this container from shrinking
-  height: 100%; // Make it full height
+const CelestialContainer = styled.div`
+  height: 200px;
 `;
 
 const WeatherDashboard = React.memo(({ currentWeather, forecast }) => {
-  console.log("WeatherDashboard rendering");
+  console.log(
+    "WeatherDashboard rendering with data:",
+    currentWeather,
+    forecast
+  );
   const [selectedDayData, setSelectedDayData] = useState(currentWeather);
 
   const handleDaySelect = useCallback(
     (index) => {
-      const allDays = [currentWeather, ...forecast.slice(0, 5)];
+      const allDays = [currentWeather, ...forecast.slice(0, 7)];
       setSelectedDayData(allDays[index]);
     },
     [currentWeather, forecast]
@@ -43,9 +43,9 @@ const WeatherDashboard = React.memo(({ currentWeather, forecast }) => {
           onDaySelect={handleDaySelect}
         />
       </ForecastContainer>
-      <ChanceOfRainContainer>
-        <ChanceOfRain selectedDayData={selectedDayData} />
-      </ChanceOfRainContainer>
+      <CelestialContainer>
+        <CelestialInfo data={selectedDayData} />
+      </CelestialContainer>
     </DashboardContainer>
   );
 });

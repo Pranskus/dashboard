@@ -132,18 +132,31 @@ const DetailValue = styled.span`
 `;
 
 const getWeatherIcon = (condition) => {
-  switch (condition) {
-    case "Clear":
-      return (props) => <SunIcon src={SunnyIcon} alt="Sunny" {...props} />;
-    case "Clouds":
-      return (props) => <img src={CloudyIcon} alt="Cloudy" {...props} />;
-    case "Rain":
-      return RainyIcon;
-    case "Thunderstorm":
-      return ThunderstormIcon;
-    default:
-      return PartlyCloudyIcon;
+  if (!condition) return PartlyCloudyIcon;
+
+  const conditions = condition.toLowerCase();
+
+  if (conditions.includes("snow")) {
+    return ThunderstormIcon; // You might want to add a snow icon
   }
+  if (conditions.includes("rain")) {
+    return RainyIcon;
+  }
+  if (conditions.includes("thunder") || conditions.includes("storm")) {
+    return ThunderstormIcon;
+  }
+  if (conditions.includes("cloudy") || conditions.includes("overcast")) {
+    return (props) => <img src={CloudyIcon} alt="Cloudy" {...props} />;
+  }
+  if (conditions.includes("partly") || conditions.includes("partially")) {
+    return PartlyCloudyIcon;
+  }
+  if (conditions.includes("clear") || conditions.includes("sunny")) {
+    return (props) => <SunIcon src={SunnyIcon} alt="Sunny" {...props} />;
+  }
+
+  // Default case
+  return PartlyCloudyIcon;
 };
 
 const SmallCard = styled.div`
@@ -235,13 +248,13 @@ const WeatherForecast = ({
   };
 
   const selectedDayData = React.useMemo(() => {
-    const allDays = [currentWeather, ...forecast.slice(0, 5)];
+    const allDays = [currentWeather, ...forecast.slice(0, 7)];
     return allDays[selectedDay] || null;
   }, [currentWeather, forecast, selectedDay]);
 
   return (
     <ForecastContainer>
-      {[currentWeather, ...forecast.slice(0, 5)].map((day, index) =>
+      {[currentWeather, ...forecast.slice(0, 7)].map((day, index) =>
         renderDayCard(day, index)
       )}
     </ForecastContainer>
