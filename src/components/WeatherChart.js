@@ -5,7 +5,7 @@ const Title = styled.h2`
   color: white;
   font-size: 1.5rem;
   margin: 0;
-  padding: 0 10px; // Remove this padding
+  padding: 0 10px;
 `;
 
 const ChartContainer = styled.div`
@@ -15,27 +15,28 @@ const ChartContainer = styled.div`
   color: white;
   width: 100%;
   box-sizing: border-box;
-  height: 100%; // Changed to fill entire height
   display: flex;
   flex-direction: column;
+  justify-content: flex-end; /* Ensure everything aligns to the bottom */
 `;
 
 const BarChartContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
   height: 200px;
   gap: 15px;
   margin-top: 10px;
-  padding: 20px 0; // Add padding for temperature labels
 `;
 
 const BarGroup = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex: 1;
-  min-width: 40px; // Ensure minimum width for bars
+  min-width: 40px;
+  height: 100%;
+  /* Create three sections: temp label, bar (flexible space), day label */
+  display: grid;
+  grid-template-rows: auto 1fr auto;
 `;
 
 const Bar = styled.div`
@@ -44,21 +45,22 @@ const Bar = styled.div`
   background: linear-gradient(180deg, #4a90e2 0%, #357abd 100%);
   border-radius: 8px;
   transition: height 0.3s ease;
-  min-height: 4px;
-  height: ${(props) => `${Math.max(4, props.height)}px`};
+  min-height: 10px;
+  height: ${(props) => `${Math.max(10, props.height)}%`};
+  align-self: flex-end; /* Align bar to bottom of its grid cell */
 `;
 
 const Temperature = styled.span`
   font-size: 0.9rem;
   color: white;
   font-weight: bold;
-  margin-bottom: 8px;
+  padding-bottom: 8px;
 `;
 
 const DayLabel = styled.span`
   font-size: 0.9rem;
   color: #8e9eab;
-  margin-top: 8px;
+  padding-top: 8px;
 `;
 
 const WeatherChart = ({ forecast, hideTitle }) => {
@@ -71,21 +73,16 @@ const WeatherChart = ({ forecast, hideTitle }) => {
   const minTemp = Math.min(...temperatures);
   const range = maxTemp - minTemp;
 
-  console.log("Temperatures:", temperatures);
-  console.log("Max:", maxTemp, "Min:", minTemp, "Range:", range);
-
   return (
     <>
       {!hideTitle && <Title>Temperature for week</Title>}
       <ChartContainer>
         <BarChartContainer>
           {forecast.map((day, index) => {
+            // Scale bar height to percentage based on temperature range
             const heightPercentage =
-              range === 0 ? 100 : ((day.main.temp - minTemp) / range) * 200; // Scale to match container height
-
-            console.log(
-              `Temperature: ${day.main.temp}°, Height: ${heightPercentage}%`
-            );
+              range === 0 ? 100 : ((day.main.temp - minTemp) / range) * 90 + 10;
+            // Ensures the smallest bar has at least 10% height
 
             return (
               <BarGroup key={index}>
