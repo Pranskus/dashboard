@@ -6,6 +6,7 @@ import { ReactComponent as ThunderstormIcon } from "../assets/Thunderstorm.svg";
 import { ReactComponent as PartlyCloudyIcon } from "../assets/PartlyCloudy.svg";
 import { ReactComponent as CloudyIcon } from "../assets/Cloudy.svg";
 import { ReactComponent as SunIcon } from "../assets/Sunny.svg";
+import { ReactComponent as SnowIcon } from "../assets/Snow.svg";
 
 import clearSkyBg from "../assets/clear-sky.jpg";
 import cloudyBg from "../assets/cloudy.jpeg";
@@ -184,7 +185,7 @@ const getWeatherIcon = (condition) => {
   const conditions = condition.toLowerCase();
 
   if (conditions.includes("snow")) {
-    return ThunderstormIcon; // You might want to add a snow icon
+    return SnowIcon; // Updated to use snow icon
   }
   if (conditions.includes("rain")) {
     return RainyIcon;
@@ -193,7 +194,7 @@ const getWeatherIcon = (condition) => {
     return ThunderstormIcon;
   }
   if (conditions.includes("cloudy") || conditions.includes("overcast")) {
-    return CloudyIcon; // Updated to use SVG component directly
+    return CloudyIcon;
   }
   if (conditions.includes("partly") || conditions.includes("partially")) {
     return PartlyCloudyIcon;
@@ -202,7 +203,6 @@ const getWeatherIcon = (condition) => {
     return SunIcon;
   }
 
-  // Default case
   return PartlyCloudyIcon;
 };
 
