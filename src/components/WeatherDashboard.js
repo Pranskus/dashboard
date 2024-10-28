@@ -7,16 +7,19 @@ const DashboardContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  height: 100%;
   width: 100%;
 `;
 
 const ForecastContainer = styled.div`
-  height: 400px;
+  height: 100%; // Increase height to accommodate the content
+  width: 100%;
 `;
 
 const CelestialContainer = styled.div`
   height: 200px;
-  margin-top: 100px;
+  margin-top: 20px;
+  width: 50%;
 `;
 
 const WeatherDashboard = React.memo(({ currentWeather, forecast }) => {

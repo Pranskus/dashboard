@@ -4,9 +4,8 @@ import styled, { keyframes } from "styled-components";
 import { ReactComponent as RainyIcon } from "../assets/Rainy.svg";
 import { ReactComponent as ThunderstormIcon } from "../assets/Thunderstorm.svg";
 import { ReactComponent as PartlyCloudyIcon } from "../assets/PartlyCloudy.svg";
-
-import SunnyIcon from "../assets/sun.png";
-import CloudyIcon from "../assets/Cloudy.png";
+import { ReactComponent as CloudyIcon } from "../assets/Cloudy.svg";
+import { ReactComponent as SunIcon } from "../assets/Sunny.svg";
 
 const glow = keyframes`
   0% { box-shadow: 0 0 5px rgba(74, 144, 226, 0.3); }
@@ -43,6 +42,7 @@ const Container = styled.div`
 const ForecastContainer = styled.div`
   display: flex;
   gap: 20px;
+  width: 98%;
   height: 100%;
   background: linear-gradient(135deg, #1e2130 0%, #2c3e50 100%);
   padding: 20px;
@@ -50,6 +50,7 @@ const ForecastContainer = styled.div`
   animation: ${glow} 3s infinite;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden; // Prevent overflow
 `;
 
 const Card = styled.div`
@@ -68,7 +69,7 @@ const Card = styled.div`
   justify-content: ${(props) => (props.selected ? "space-between" : "center")};
   cursor: pointer;
   transition: all 0.3s ease;
-  height: 100%;
+  max-height: 100%;
 
   &:hover {
     transform: translateY(-5px);
@@ -136,10 +137,6 @@ const WeatherIconWrapper = styled.div`
   }
 `;
 
-const SunIcon = styled.img`
-  animation: ${spin} 20s linear infinite;
-`;
-
 const Temperature = styled.p`
   font-size: ${(props) => (props.current ? "3.5rem" : "1.8rem")};
   margin: 0;
@@ -196,13 +193,13 @@ const getWeatherIcon = (condition) => {
     return ThunderstormIcon;
   }
   if (conditions.includes("cloudy") || conditions.includes("overcast")) {
-    return (props) => <img src={CloudyIcon} alt="Cloudy" {...props} />;
+    return CloudyIcon; // Updated to use SVG component directly
   }
   if (conditions.includes("partly") || conditions.includes("partially")) {
     return PartlyCloudyIcon;
   }
   if (conditions.includes("clear") || conditions.includes("sunny")) {
-    return (props) => <SunIcon src={SunnyIcon} alt="Sunny" {...props} />;
+    return SunIcon;
   }
 
   // Default case
@@ -296,7 +293,7 @@ const WeatherForecast = ({
 
   return (
     <ForecastContainer>
-      {[currentWeather, ...forecast.slice(0, 7)].map((day, index) =>
+      {[currentWeather, ...forecast.slice(0, 6)].map((day, index) =>
         renderDayCard(day, index)
       )}
     </ForecastContainer>
