@@ -75,7 +75,7 @@ const LoadingText = styled.div`
   font-size: 1rem;
 `;
 
-const CityComparison = () => {
+const CityComparison = ({ hideTitle }) => {
   const [citiesData, setCitiesData] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -165,7 +165,7 @@ const CityComparison = () => {
 
   return (
     <>
-      <Title>Other largest cities</Title>
+      {!hideTitle && <Title>Other largest cities</Title>}
       <Container>
         {cities.map((city) => {
           const cityName = city.split(",")[0];

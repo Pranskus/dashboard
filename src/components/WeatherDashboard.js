@@ -4,6 +4,7 @@ import WeatherForecast from "./WeatherForecast";
 import CelestialInfo from "./CelestialInfo";
 
 import CityComparison from "./CityComparison";
+import WeatherChart from "./WeatherChart";
 
 const DashboardContainer = styled.div`
   display: grid;
@@ -32,10 +33,30 @@ const ForecastContainer = styled.div`
 
 const BottomSection = styled.div`
   display: flex;
-  flex-direction: column; // Change to column layout
-  align-items: flex-start; // Align items to the left
-  gap: 20px;
+  flex-direction: column;
+  gap: 10px;
   margin-top: 20px;
+  width: 100%;
+`;
+
+const BottomTitles = styled.div`
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 20px;
+  width: 100%;
+`;
+
+const BottomContent = styled.div`
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 20px;
+  width: 100%;
+`;
+
+const Title = styled.h2`
+  margin: 0;
+  font-size: 1.2rem;
+  color: #white;
 `;
 
 const WeatherDashboard = React.memo(({ currentWeather, forecast }) => {
@@ -60,7 +81,17 @@ const WeatherDashboard = React.memo(({ currentWeather, forecast }) => {
           />
         </ForecastContainer>
         <BottomSection>
-          <CityComparison />
+          <BottomTitles>
+            <Title>Other largest cities</Title>
+            <Title>Temperature for week</Title>
+          </BottomTitles>
+          <BottomContent>
+            <CityComparison hideTitle />
+            <WeatherChart
+              forecast={[currentWeather, ...forecast.slice(0, 6)]}
+              hideTitle
+            />
+          </BottomContent>
         </BottomSection>
       </MainSection>
       <SideSection>
