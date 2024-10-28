@@ -31,9 +31,10 @@ const ForecastContainer = styled.div`
   gap: 20px;
   width: 100%;
   height: 100%;
-  padding: 20px;
+
   border-radius: 25px;
-  overflow: hidden;
+  overflow-x: hidden; /* Prevent horizontal overflow */
+  overflow-y: hidden; /* Prevent vertical overflow */
 
   ${(props) =>
     props.singleDay &&
@@ -44,20 +45,24 @@ const ForecastContainer = styled.div`
     }
   `}
 `;
-
 const Card = styled.div`
   background: ${(props) => {
     if (props.selected) {
-      return `linear-gradient(rgba(74, 144, 226, 0.4), rgba(53, 122, 189, 0.9)), url(${props.bgImage})`; // Reduced opacity here
+      return `linear-gradient(rgba(74, 144, 226, 0.4), rgba(53, 122, 189, 0.9)), url(${props.bgImage})`;
     }
     return "rgba(255, 255, 255, 0.05)";
   }};
   background-size: cover;
   background-position: center;
   border-radius: 25px;
-  padding: ${(props) => (props.selected ? "25px" : "20px")};
+  padding: ${(props) =>
+    props.selected
+      ? "25px"
+      : "15px"}; /* Slightly smaller padding for non-selected cards */
   color: white;
-  flex: ${(props) => (props.selected ? 3 : 1)};
+  flex-grow: ${(props) =>
+    props.selected ? 3 : 1}; /* Larger card expands more */
+  flex-shrink: 1; /* Allow smaller cards to shrink */
   display: flex;
   flex-direction: column;
   justify-content: ${(props) => (props.selected ? "space-between" : "center")};
@@ -66,12 +71,17 @@ const Card = styled.div`
   max-height: 100%;
   position: relative;
   overflow: hidden;
+  min-width: 80px; /* Set a minimum width for the smallest cards */
+  flex-basis: ${(props) =>
+    props.selected
+      ? "300px"
+      : "100px"}; /* Non-selected cards have smaller base size */
 
   &:hover {
     transform: translateY(-5px);
     background: ${(props) => {
       if (props.selected) {
-        return `linear-gradient(rgba(74, 144, 226, 0.5), rgba(53, 122, 189, 0.9)), url(${props.bgImage})`; // Slightly more opaque on hover
+        return `linear-gradient(rgba(74, 144, 226, 0.5), rgba(53, 122, 189, 0.9)), url(${props.bgImage})`;
       }
       return "rgba(200, 200, 200, 0.05)";
     }};
