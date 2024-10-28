@@ -10,6 +10,7 @@ const AppContainer = styled.div`
   background-color: #1e1e1e;
   color: white;
   min-height: 100vh;
+  height: 60%;
   display: flex;
   flex-direction: column;
 `;
@@ -19,9 +20,10 @@ const MainContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding: 20px;
-  width: 80%;
+  padding: 40px 60px; // Reduce horizontal padding to 20px
+  width: 100%;
   margin: 0 auto;
+  box-sizing: border-box;
 `;
 
 function App() {

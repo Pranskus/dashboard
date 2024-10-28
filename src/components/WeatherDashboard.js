@@ -7,7 +7,7 @@ import CityComparison from "./CityComparison";
 
 const DashboardContainer = styled.div`
   display: grid;
-  grid-template-columns: 1fr auto; // Main content and side column
+  grid-template-columns: 1fr 300px; // Main content and fixed-width side column
   gap: 20px;
   height: 100%;
   width: 100%;
@@ -23,31 +23,22 @@ const SideSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  width: 300px; // Match the CityComparison container width
+  width: 300px;
 `;
 
 const ForecastContainer = styled.div`
-  height: 100%; // Increase height to accommodate the content
   width: 100%;
-`;
-
-const WindContainer = styled.div`
-  height: 200px;
-  margin-top: 20px;
-  width: 50%;
 `;
 
 const BottomSection = styled.div`
   display: flex;
+  flex-direction: column; // Change to column layout
+  align-items: flex-start; // Align items to the left
   gap: 20px;
+  margin-top: 20px;
 `;
 
 const WeatherDashboard = React.memo(({ currentWeather, forecast }) => {
-  console.log(
-    "WeatherDashboard rendering with data:",
-    currentWeather,
-    forecast
-  );
   const [selectedDayData, setSelectedDayData] = useState(currentWeather);
 
   const handleDaySelect = useCallback(

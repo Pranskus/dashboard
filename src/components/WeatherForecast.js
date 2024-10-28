@@ -33,8 +33,6 @@ const ForecastContainer = styled.div`
   height: 100%;
 
   border-radius: 25px;
-  overflow-x: hidden; /* Prevent horizontal overflow */
-  overflow-y: hidden; /* Prevent vertical overflow */
 
   ${(props) =>
     props.singleDay &&
@@ -238,7 +236,7 @@ const TitleBar = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
-  padding: 0 10px;
+  padding: 0 10px; // Remove this padding
 `;
 
 const Title = styled.h2`
@@ -371,8 +369,12 @@ const WeatherForecast = ({
     );
   };
 
+  const ForecastWrapper = styled.div`
+    width: 100%;
+  `;
+
   return (
-    <div>
+    <ForecastWrapper>
       <TitleBar>
         <Title>Weather Forecast</Title>
         <ButtonGroup>
@@ -409,7 +411,7 @@ const WeatherForecast = ({
           renderDayCard(day, index)
         )}
       </ForecastContainer>
-    </div>
+    </ForecastWrapper>
   );
 };
 

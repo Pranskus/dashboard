@@ -1,24 +1,25 @@
 import React, { useState, useEffect } from "react";
-import styled, { keyframes } from "styled-components";
-import {
-  WiCloudy,
-  WiDaySunny,
-  WiRain,
-  WiThunderstorm,
-  WiSnow,
-} from "react-icons/wi";
+import styled from "styled-components";
+import axios from "axios";
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 10px;
   width: 300px;
+`;
+
+const Title = styled.h2`
+  color: white;
+  font-size: 1.5rem;
+  margin: 0;
+  padding: 0 10px; // Remove this padding
 `;
 
 const CityCard = styled.div`
   background: linear-gradient(135deg, #1e2130 0%, #2c3e50 100%);
   border-radius: 25px;
-  padding: 15px;
+  padding: 20px;
   color: white;
   transition: transform 0.3s ease;
 
@@ -29,8 +30,8 @@ const CityCard = styled.div`
 
 const CardContent = styled.div`
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
 `;
 
 const CityInfo = styled.div`
@@ -39,144 +40,157 @@ const CityInfo = styled.div`
   gap: 5px;
 `;
 
-const CityName = styled.h2`
+const CityName = styled.h3`
   margin: 0;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   color: #4a90e2;
 `;
 
 const DateText = styled.span`
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   color: #8e9eab;
 `;
 
+const WeatherInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+`;
+
 const Temperature = styled.div`
-  font-size: 1.8rem;
+  font-size: 2rem;
   font-weight: bold;
+  line-height: 1;
 `;
 
 const WeatherIcon = styled.div`
-  font-size: 2.5rem;
+  font-size: 1.8rem;
   color: #4a90e2;
+  margin-bottom: 5px;
 `;
 
 const LoadingText = styled.div`
-  text-align: center;
-  color: #4a90e2;
-  padding: 20px;
+  color: white;
+  font-size: 1rem;
 `;
-
-const getWeatherIcon = (condition) => {
-  if (!condition) return WiCloudy;
-
-  const conditions = condition.toLowerCase();
-  if (conditions.includes("snow")) return WiSnow;
-  if (conditions.includes("rain")) return WiRain;
-  if (conditions.includes("thunder") || conditions.includes("storm"))
-    return WiThunderstorm;
-  if (conditions.includes("cloud")) return WiCloudy;
-  return WiDaySunny;
-};
-
-const getTime = () => {
-  const now = new window.Date();
-  const hours = now.getHours().toString().padStart(2, "0");
-  const minutes = now.getMinutes().toString().padStart(2, "0");
-  const time = `${hours}:${minutes}`;
-
-  const options = { year: "numeric", month: "long", day: "numeric" };
-  const date = now.toLocaleDateString("en-US", options);
-
-  return { time, date };
-};
 
 const CityComparison = () => {
   const [citiesData, setCitiesData] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [currentTime, setCurrentTime] = useState(getTime());
+  const [currentTime, setCurrentTime] = useState({
+    date: "",
+    time: "",
+  });
 
   const cities = ["Vilnius,LT", "Kaunas,LT", "Klaipėda,LT"];
 
   useEffect(() => {
-    const fetchCitiesData = async () => {
+    const fetchData = async () => {
+      setLoading(true);
       try {
         const API_KEY = "6PNY9WT9YSL482LUA525EZL8L";
+        const requests = cities.map((city) =>
+          fetch(
+            `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${city}?unitGroup=metric&key=${API_KEY}&contentType=json`
+          ).then((response) => response.json())
+        );
 
-        const promises = cities.map((city) => {
-          const url = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${city}/today?unitGroup=metric&key=${API_KEY}&contentType=json`;
-          return fetch(url).then((res) => {
-            if (!res.ok) {
-              throw new Error(`HTTP error! status: ${res.status}`);
-            }
-            return res.json();
-          });
-        });
-
-        const results = await Promise.all(promises);
-
+        const responses = await Promise.all(requests);
         const data = {};
-        results.forEach((result, index) => {
+        responses.forEach((response, index) => {
           data[cities[index]] = {
-            temp: result.currentConditions.temp,
-            conditions: result.currentConditions.conditions,
+            temp: response.currentConditions.temp,
+            conditions: response.currentConditions.conditions,
           };
         });
 
         setCitiesData(data);
-        setLoading(false);
-      } catch (err) {
+
+        // Set current time
+        const now = new Date();
+        setCurrentTime({
+          date: now.toLocaleDateString("en-GB", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          }),
+          time: now.toLocaleTimeString("en-GB", {
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
+        });
+      } catch (error) {
+        console.error("Error fetching cities data:", error);
         setError("Failed to fetch weather data");
+      } finally {
         setLoading(false);
       }
     };
 
-    fetchCitiesData();
-
-    // Update time every minute
-    const timeInterval = setInterval(() => {
-      setCurrentTime(getTime());
-    }, 60000);
-
-    return () => clearInterval(timeInterval);
+    fetchData();
   }, []);
 
+  const getWeatherIcon = (condition) => {
+    if (!condition) return "🌤";
+    const conditions = condition.toLowerCase();
+    if (conditions.includes("snow")) return "🌨";
+    if (conditions.includes("rain")) return "🌧";
+    if (conditions.includes("thunder")) return "⛈";
+    if (conditions.includes("cloudy")) return "☁";
+    if (conditions.includes("partly")) return "⛅";
+    if (conditions.includes("clear") || conditions.includes("sunny"))
+      return "☀";
+    return "🌤";
+  };
+
   if (loading) {
-    return <LoadingText>Loading cities data...</LoadingText>;
+    return (
+      <>
+        <Title>Other largest cities</Title>
+        <LoadingText>Loading cities data...</LoadingText>
+      </>
+    );
   }
 
   if (error) {
-    return <LoadingText>{error}</LoadingText>;
+    return (
+      <>
+        <Title>Other largest cities</Title>
+        <LoadingText>{error}</LoadingText>
+      </>
+    );
   }
 
   return (
-    <Container>
-      {cities.map((city) => {
-        const WeatherIconComponent = getWeatherIcon(
-          citiesData[city]?.conditions
-        );
-
-        return (
-          <CityCard key={city}>
-            <CardContent>
-              <CityInfo>
-                <CityName>{city.split(",")[0]}</CityName>
-                <DateText>{currentTime.date}</DateText>{" "}
-                {/* Displaying the date */}
-                <DateText>{currentTime.time}</DateText>{" "}
-                {/* Displaying the time */}
-                <Temperature>
-                  {Math.round(citiesData[city]?.temp || 0)}°
-                </Temperature>
-              </CityInfo>
-              <WeatherIcon>
-                <WeatherIconComponent />
-              </WeatherIcon>
-            </CardContent>
-          </CityCard>
-        );
-      })}
-    </Container>
+    <>
+      <Title>Other largest cities</Title>
+      <Container>
+        {cities.map((city) => {
+          const cityName = city.split(",")[0];
+          return (
+            <CityCard key={city}>
+              <CardContent>
+                <CityInfo>
+                  <CityName>{cityName}</CityName>
+                  <DateText>{currentTime.date}</DateText>
+                  <DateText>{currentTime.time}</DateText>
+                </CityInfo>
+                <WeatherInfo>
+                  <WeatherIcon>
+                    {getWeatherIcon(citiesData[city]?.conditions)}
+                  </WeatherIcon>
+                  <Temperature>
+                    {Math.round(citiesData[city]?.temp || 0)}°
+                  </Temperature>
+                </WeatherInfo>
+              </CardContent>
+            </CityCard>
+          );
+        })}
+      </Container>
+    </>
   );
 };
 

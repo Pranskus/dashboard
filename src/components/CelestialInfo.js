@@ -24,6 +24,8 @@ const Container = styled.div`
   grid-template-rows: repeat(3, 1fr);
   gap: 20px;
   height: 100%;
+  width: 100%; // Add this to ensure full width
+  box-sizing: border-box; // Add this to include padding in width calculation
 `;
 
 const InfoCard = styled.div`
