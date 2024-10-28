@@ -20,7 +20,6 @@ const MainContent = styled.div`
   flex-direction: column;
   gap: 20px;
   padding: 20px;
-  max-width: auto;
   width: 80%;
   margin: 0 auto;
 `;
