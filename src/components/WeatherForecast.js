@@ -8,6 +8,12 @@ import { ReactComponent as PartlyCloudyIcon } from "../assets/PartlyCloudy.svg";
 import SunnyIcon from "../assets/sun.png";
 import CloudyIcon from "../assets/Cloudy.png";
 
+const glow = keyframes`
+  0% { box-shadow: 0 0 5px rgba(74, 144, 226, 0.3); }
+  50% { box-shadow: 0 0 20px rgba(74, 144, 226, 0.6); }
+  100% { box-shadow: 0 0 5px rgba(74, 144, 226, 0.3); }
+`;
+
 const float = keyframes`
   0% {
     transform: translateY(0px);
@@ -37,15 +43,22 @@ const Container = styled.div`
 const ForecastContainer = styled.div`
   display: flex;
   gap: 20px;
-  width: 100%;
   height: 100%;
+  background: linear-gradient(135deg, #1e2130 0%, #2c3e50 100%);
+  padding: 20px;
+  border-radius: 25px;
+  animation: ${glow} 3s infinite;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 `;
 
 const Card = styled.div`
-  background: ${(props) =>
-    props.selected
-      ? "linear-gradient(135deg, #4a90e2 0%, #357abd 100%)"
-      : "linear-gradient(135deg, #1e2130 0%, #2c3e50 100%)"};
+  background: ${
+    (props) =>
+      props.selected
+        ? "linear-gradient(135deg, #4a90e2 0%, #357abd 100%)"
+        : "rgba(255, 255, 255, 0.05)" // Remove background, just use container's background
+  };
   border-radius: 25px;
   padding: ${(props) => (props.selected ? "25px" : "20px")};
   color: white;
@@ -56,16 +69,13 @@ const Card = styled.div`
   cursor: pointer;
   transition: all 0.3s ease;
   height: 100%;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
 
   &:hover {
     transform: translateY(-5px);
     background: ${(props) =>
       props.selected
         ? "linear-gradient(135deg, #4a90e2 0%, #357abd 100%)"
-        : "linear-gradient(135deg, #2c3e50 0%, #3d5167 100%)"};
-  }
+        : "rgba(200, 200, 200, 0.05)"};
 `;
 
 const CurrentDayInfo = styled.div`
@@ -79,23 +89,20 @@ const TopRow = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: -10px;
 `;
 
 const MiddleRow = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 20px 0;
 `;
 
 const BottomRow = styled.div`
   display: grid;
   grid-template-columns: repeat(1, 1fr);
   gap: 10px;
-  background: rgba(0, 0, 0, 0.1);
-  padding: 15px;
   border-radius: 20px;
+  width: 100%;
 `;
 
 const Day = styled.h3`
@@ -103,14 +110,14 @@ const Day = styled.h3`
   font-size: ${(props) => (props.current ? "2rem" : "1.2rem")};
   font-weight: bold;
   text-align: center;
-  color: #8e9eab;
+  color: white;
 `;
 
 const WeatherIconWrapper = styled.div`
-  width: ${(props) => (props.current ? "80px" : "50px")};
-  height: ${(props) => (props.current ? "80px" : "50px")};
+  width: ${(props) => (props.current ? "80px" : "70px")};
+  height: ${(props) => (props.current ? "80px" : "70px")};
   animation: ${float} 3s ease-in-out infinite;
-  background: rgba(74, 144, 226, 0.1);
+
   border-radius: 50%;
   padding: 10px;
   display: flex;
@@ -119,15 +126,13 @@ const WeatherIconWrapper = styled.div`
   transition: all 0.3s ease;
 
   &:hover {
-    background: rgba(74, 144, 226, 0.2);
     transform: rotate(360deg);
-  }
 
-  img,
-  svg {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
+    img,
+    svg {
+      transform: scale(1.5); /* Scale the icon slightly */
+      transition: transform 0.3s ease; /* Smooth scaling */
+    }
   }
 `;
 
@@ -157,7 +162,7 @@ const DetailRow = styled.p`
 `;
 
 const DetailLabel = styled.span`
-  color: #8e9eab;
+  color: #cfd8dc;
   font-size: 0.9rem;
 `;
 
@@ -174,13 +179,6 @@ const SmallCard = styled.div`
   height: 100%;
   gap: 15px;
   padding: 10px;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 20px;
-  transition: background 0.3s ease;
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.1);
-  }
 `;
 
 const getWeatherIcon = (condition) => {
