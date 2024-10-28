@@ -65,11 +65,11 @@ function App() {
           ],
           wind: {
             speed: data.currentConditions.windspeed,
+            deg: data.currentConditions.winddir, // Add wind direction
           },
           name: data.address,
-          // Update celestial data format
-          sunrise: data.days[0].sunrise, // Get from current day
-          sunset: data.days[0].sunset, // Get from current day
+          sunrise: data.days[0].sunrise,
+          sunset: data.days[0].sunset,
           moonphase: data.days[0].moonphase,
           uvindex: data.currentConditions.uvindex,
         },
@@ -89,8 +89,8 @@ function App() {
           ],
           wind: {
             speed: day.windspeed,
+            deg: day.winddir, // Add wind direction for forecast days
           },
-          // Update celestial data format for forecast days
           sunrise: day.sunrise,
           sunset: day.sunset,
           moonphase: day.moonphase,

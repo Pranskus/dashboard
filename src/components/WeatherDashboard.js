@@ -2,6 +2,7 @@ import React, { useState, useCallback } from "react";
 import styled from "styled-components";
 import WeatherForecast from "./WeatherForecast";
 import CelestialInfo from "./CelestialInfo";
+import WindInfo from "./WindInfo";
 
 const DashboardContainer = styled.div`
   display: flex;
@@ -17,6 +18,12 @@ const ForecastContainer = styled.div`
 `;
 
 const CelestialContainer = styled.div`
+  height: 200px;
+  margin-top: 20px;
+  width: 50%;
+`;
+
+const WindContainer = styled.div`
   height: 200px;
   margin-top: 20px;
   width: 50%;
@@ -47,9 +54,14 @@ const WeatherDashboard = React.memo(({ currentWeather, forecast }) => {
           onDaySelect={handleDaySelect}
         />
       </ForecastContainer>
-      <CelestialContainer>
-        <CelestialInfo data={selectedDayData} />
-      </CelestialContainer>
+      <div style={{ display: "flex", gap: "20px" }}>
+        <CelestialContainer>
+          <CelestialInfo data={selectedDayData} />
+        </CelestialContainer>
+        <WindContainer>
+          <WindInfo data={selectedDayData} />
+        </WindContainer>
+      </div>
     </DashboardContainer>
   );
 });
