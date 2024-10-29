@@ -50,7 +50,7 @@ const CityInfo = styled.div`
 const CityName = styled.h3`
   margin: 0;
   font-size: 1.5rem;
-  color: #4a90e2;
+  color: white;
 `;
 
 const DateText = styled.span`

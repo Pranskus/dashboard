@@ -72,6 +72,20 @@ const TemperatureChart = ({ forecast }) => {
           height="100%"
         >
           <defs>
+            <linearGradient id="lineGradient" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stopColor="#4a90e2" stopOpacity={0.8} />
+              <stop offset="50%" stopColor="#64b5f6" stopOpacity={1} />
+              <stop offset="100%" stopColor="#4a90e2" stopOpacity={0.8} />
+            </linearGradient>
+
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+              <feMerge>
+                <feMergeNode in="coloredBlur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+
             <linearGradient
               id="temperatureGradient"
               x1="0"
@@ -99,17 +113,23 @@ const TemperatureChart = ({ forecast }) => {
             type="natural"
             dataKey="temperature"
             stroke="none"
-            fill="#4a90e2"
+            fill="url(#temperatureGradient)"
             fillOpacity={0.2}
             baseLine={0}
           />
           <Line
             type="natural"
             dataKey="temperature"
-            stroke="#4a90e2"
+            stroke="url(#lineGradient)"
             strokeWidth={3}
             dot={false}
-            activeDot={false}
+            activeDot={{
+              r: 6,
+              fill: "#64b5f6",
+              stroke: "#fff",
+              strokeWidth: 2,
+            }}
+            filter="url(#glow)"
           />
         </LineChart>
       </ResponsiveContainer>
