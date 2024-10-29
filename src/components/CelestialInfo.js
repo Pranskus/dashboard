@@ -15,7 +15,12 @@ const getSafeValue = (value, defaultValue = "N/A") => {
 };
 
 const Container = styled.div`
-  background: linear-gradient(135deg, #1e2130 0%, #2c3e50 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(30, 33, 48, 0.3) 0%,
+    rgba(44, 62, 80, 0.2) 100%
+  );
+  backdrop-filter: blur(100px);
   border-radius: 25px;
   padding: 20px;
   color: white;
@@ -24,8 +29,9 @@ const Container = styled.div`
   grid-template-rows: repeat(3, 1fr);
   gap: 20px;
   height: 100%;
-  width: 100%; // Add this to ensure full width
-  box-sizing: border-box; // Add this to include padding in width calculation
+  width: 100%;
+  box-sizing: border-box;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 `;
 
 const InfoCard = styled.div`

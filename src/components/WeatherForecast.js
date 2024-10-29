@@ -237,7 +237,7 @@ const TitleBar = styled.div`
 `;
 
 const Title = styled.h2`
-  color: #4a90e2;
+  color: white;
   margin: 0;
   font-size: 1.5rem;
 `;

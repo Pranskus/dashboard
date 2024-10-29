@@ -54,10 +54,11 @@ const BottomContent = styled.div`
   width: 100%;
 `;
 
-const Title = styled.h2`
+const Title = styled.h1`
+  color: white;
+  font-size: 2rem;
   margin: 0;
   font-size: 1.2rem;
-  color: #white;
   padding: 0 10px; // Remove this padding
   margin-bottom: 10px;
 `;

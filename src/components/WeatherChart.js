@@ -23,7 +23,7 @@ const ChartContainer = styled.div`
   color: white;
   width: 100%;
   box-sizing: border-box;
-  height: 335px;
+  height: 330px;
   position: relative;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // Added drop shadow
 `;

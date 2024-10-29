@@ -8,7 +8,7 @@ const HeaderWrapper = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
-  padding: 15px;
+  padding: 15px 0 0 0;
 `;
 
 const HeaderContainer = styled.header`

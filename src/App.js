@@ -6,7 +6,7 @@ import Header from "./components/Header";
 import WeatherDashboard from "./components/WeatherDashboard";
 import clearSkyBg from "./assets/clear-sky.jpg";
 import stormBg from "./assets/storm.jpeg";
-import cloudyBg from "./assets/cloudy.jpeg";
+import cloudyBg from "./assets/cloudy.jpg";
 
 // First, add the keyframe animation
 const moveBackground = keyframes`
@@ -47,7 +47,7 @@ const AppContainer = styled.div`
     background-repeat: no-repeat;
     background-attachment: fixed;
     filter: blur(8px); // Adjust blur amount here
-    animation: ${moveBackground} 20s ease-in-out infinite;
+    animation: ${moveBackground} 10s ease-in-out infinite;
     z-index: -1;
   }
 
@@ -62,7 +62,7 @@ const MainContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding: 40px 60px 80px 60px;
+  padding: 40px 100px 10px 100px;
   width: 100%;
   margin: 0 auto;
   box-sizing: border-box;
