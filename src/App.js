@@ -1,23 +1,60 @@
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import GlobalStyles from "./GlobalStyles";
 import Header from "./components/Header";
 import WeatherDashboard from "./components/WeatherDashboard";
+import clearSkyBg from "./assets/clear-sky.jpg";
+import stormBg from "./assets/storm.jpeg";
+import cloudyBg from "./assets/cloudy.jpeg";
+
+// First, add the keyframe animation
+const moveBackground = keyframes`
+  0% {
+    background-size: 110% 110%;
+    background-position: 50% 50%;
+  }
+  50% {
+    background-size: 120% 120%;
+    background-position: 51% 51%;
+  }
+  100% {
+    background-size: 110% 110%;
+    background-position: 50% 50%;
+  }
+`;
 
 const AppContainer = styled.div`
   font-family: Arial, sans-serif;
-  background: linear-gradient(135deg, #1e2130 0%, #2c3e50 100%);
-  color: white;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   overflow-y: auto;
+
+  &::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(rgba(13, 15, 22, 0.7), rgba(24, 29, 45, 0.8)),
+      url(${(props) => props.bgImage});
+    background-size: 110% 110%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    filter: blur(8px); // Adjust blur amount here
+    animation: ${moveBackground} 20s ease-in-out infinite;
+    z-index: -1;
+  }
+
+  color: white;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 `;
 
 const MainContent = styled.div`
@@ -124,7 +161,7 @@ function App() {
   return (
     <>
       <GlobalStyles />
-      <AppContainer>
+      <AppContainer bgImage={cloudyBg}>
         <Header onSearch={handleSearch} currentCity={city} />
         <MainContent>
           {loading && <p>Loading...</p>}

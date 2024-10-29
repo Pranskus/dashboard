@@ -12,13 +12,20 @@ import {
 } from "recharts";
 
 const ChartContainer = styled.div`
-  background: linear-gradient(135deg, #1e2130 0%, #2c3e50 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(30, 33, 48, 0.3) 0%,
+    rgba(44, 62, 80, 0.2) 100%
+  );
+  backdrop-filter: blur(100px);
   border-radius: 25px;
-  padding: 20px;
+  padding: 10px 20px 10px 20px;
   color: white;
   width: 100%;
   box-sizing: border-box;
-  height: 385px;
+  height: 335px;
+  position: relative;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // Added drop shadow
 `;
 
 // Custom tooltip component
@@ -50,12 +57,19 @@ const TemperatureChart = ({ forecast }) => {
     temperature: day.main.temp,
   }));
 
+  const options = {
+    maintainAspectRatio: false,
+    responsive: true,
+  };
+
   return (
     <ChartContainer>
       <ResponsiveContainer width="100%" height="100%">
         <LineChart
           data={data}
           margin={{ top: 20, right: 30, left: 0, bottom: 10 }}
+          options={options}
+          height="100%"
         >
           <defs>
             <linearGradient
