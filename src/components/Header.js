@@ -4,12 +4,20 @@ import axios from "axios";
 import { debounce } from "lodash";
 import { MdLocationOn, MdSearch } from "react-icons/md";
 
+const HeaderWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 20px;
+`;
+
 const HeaderContainer = styled.header`
   display: flex;
   align-items: center;
-  padding: 20px;
   gap: 20px;
   background-color: transparent;
+  width: 100%;
+  max-width: 1200px;
 `;
 
 const LocationContainer = styled.div`
@@ -139,35 +147,37 @@ function Header({ onSearch, currentCity }) {
   };
 
   return (
-    <HeaderContainer>
-      <LocationContainer>
-        <LocationIcon />
-        {currentCity || "Seattle, Australia"}
-      </LocationContainer>
-      <SearchContainer>
-        <SearchForm onSubmit={handleSubmit}>
-          <SearchIcon />
-          <SearchBar
-            type="text"
-            placeholder="Search city..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </SearchForm>
-        {suggestions.length > 0 && (
-          <SuggestionsList>
-            {suggestions.map((suggestion, index) => (
-              <SuggestionItem
-                key={index}
-                onClick={() => handleSuggestionClick(suggestion)}
-              >
-                {suggestion.name}, {suggestion.country}
-              </SuggestionItem>
-            ))}
-          </SuggestionsList>
-        )}
-      </SearchContainer>
-    </HeaderContainer>
+    <HeaderWrapper>
+      <HeaderContainer>
+        <LocationContainer>
+          <LocationIcon />
+          {currentCity || "Seattle, Australia"}
+        </LocationContainer>
+        <SearchContainer>
+          <SearchForm onSubmit={handleSubmit}>
+            <SearchIcon />
+            <SearchBar
+              type="text"
+              placeholder="Search city..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </SearchForm>
+          {suggestions.length > 0 && (
+            <SuggestionsList>
+              {suggestions.map((suggestion, index) => (
+                <SuggestionItem
+                  key={index}
+                  onClick={() => handleSuggestionClick(suggestion)}
+                >
+                  {suggestion.name}, {suggestion.country}
+                </SuggestionItem>
+              ))}
+            </SuggestionsList>
+          )}
+        </SearchContainer>
+      </HeaderContainer>
+    </HeaderWrapper>
   );
 }
 

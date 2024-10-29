@@ -7,12 +7,17 @@ import WeatherDashboard from "./components/WeatherDashboard";
 
 const AppContainer = styled.div`
   font-family: Arial, sans-serif;
-  background-color: #1e1e1e;
+  background: linear-gradient(135deg, #1e2130 0%, #2c3e50 100%);
   color: white;
   min-height: 100vh;
-  height: 60%;
   display: flex;
   flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow-y: auto;
 `;
 
 const MainContent = styled.div`
@@ -20,10 +25,11 @@ const MainContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding: 40px 60px; // Reduce horizontal padding to 20px
+  padding: 40px 60px 80px 60px;
   width: 100%;
   margin: 0 auto;
   box-sizing: border-box;
+  overflow-y: auto;
 `;
 
 function App() {

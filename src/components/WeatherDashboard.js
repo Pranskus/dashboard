@@ -12,6 +12,7 @@ const DashboardContainer = styled.div`
   gap: 20px;
   height: 100%;
   width: 100%;
+  margin-bottom: 200px;
 `;
 
 const MainSection = styled.div`
@@ -85,7 +86,7 @@ const WeatherDashboard = React.memo(({ currentWeather, forecast }) => {
         <BottomSection>
           <BottomTitles>
             <Title>Other largest cities</Title>
-            <Title>Temperature for week</Title>
+            <Title>Temperature next 7 days</Title>
           </BottomTitles>
           <BottomContent>
             <CityComparison hideTitle />
