@@ -6,6 +6,7 @@ import cloudyBg from "../assets/cloudy.jpeg";
 import rainyBg from "../assets/rainy.jpg";
 import stormBg from "../assets/storm.jpeg";
 import partlyCloudyBg from "../assets/partly-cloudy.jpg";
+import snowingBg from "../assets/snowing.jpg";
 
 const float = keyframes`
   0% {
@@ -16,6 +17,21 @@ const float = keyframes`
   }
   100% {
     transform: translateY(0px);
+  }
+`;
+
+const moveBackground = keyframes`
+  0% {
+    background-size: 150% auto;
+    background-position: 50% 50%;
+  }
+  50% {
+    background-size: 170% auto;
+    background-position: 51% 51%;
+  }
+  100% {
+    background-size: 150% auto;
+    background-position: 50% 50%;
   }
 `;
 
@@ -43,17 +59,15 @@ const Card = styled.div`
     }
     return "rgba(255, 255, 255, 0.05)";
   }};
-  background-size: cover;
+  background-size: ${(props) => (props.selected ? "150% auto" : "cover")};
   background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: local;
   border-radius: 25px;
-  padding: ${(props) =>
-    props.selected
-      ? "25px"
-      : "15px"}; /* Slightly smaller padding for non-selected cards */
+  padding: ${(props) => (props.selected ? "25px" : "15px")};
   color: white;
-  flex-grow: ${(props) =>
-    props.selected ? 3 : 1}; /* Larger card expands more */
-  flex-shrink: 1; /* Allow smaller cards to shrink */
+  flex-grow: ${(props) => (props.selected ? 3 : 1)};
+  flex-shrink: 1;
   display: flex;
   flex-direction: column;
   justify-content: ${(props) => (props.selected ? "space-between" : "center")};
@@ -62,11 +76,10 @@ const Card = styled.div`
   max-height: 100%;
   position: relative;
   overflow: hidden;
-  min-width: 80px; /* Set a minimum width for the smallest cards */
-  flex-basis: ${(props) =>
-    props.selected
-      ? "300px"
-      : "100px"}; /* Non-selected cards have smaller base size */
+  min-width: 80px;
+  flex-basis: ${(props) => (props.selected ? "300px" : "100px")};
+  animation: ${(props) => (props.selected ? moveBackground : "none")} 10s
+    ease-in-out infinite;
 
   &:hover {
     transform: translateY(-5px);
@@ -76,8 +89,9 @@ const Card = styled.div`
       }
       return "rgba(200, 200, 200, 0.05)";
     }};
-    background-size: cover;
+    background-size: ${(props) => (props.selected ? "150% auto" : "cover")};
     background-position: center;
+    background-repeat: no-repeat;
   }
 `;
 
@@ -193,8 +207,10 @@ const getBackgroundImage = (condition) => {
   if (!condition) return partlyCloudyBg;
 
   const conditions = condition.toLowerCase();
+  if (conditions.includes("snow") || conditions.includes("flurries"))
+    return snowingBg;
   if (conditions.includes("rain")) return rainyBg;
-  if (conditions.includes("storm") || conditions.includes("thunder"))
+  if (conditions.includes("thunder") || conditions.includes("storm"))
     return stormBg;
   if (conditions.includes("cloudy") || conditions.includes("overcast"))
     return cloudyBg;
@@ -202,8 +218,7 @@ const getBackgroundImage = (condition) => {
     return partlyCloudyBg;
   if (conditions.includes("clear") || conditions.includes("sunny"))
     return clearSkyBg;
-
-  return partlyCloudyBg; // default
+  return partlyCloudyBg;
 };
 
 const TitleBar = styled.div`
@@ -303,11 +318,6 @@ const WeatherForecast = ({
         selected={isSelected}
         onClick={() => handleDaySelect(index)}
         bgImage={backgroundImage}
-        style={{
-          backgroundImage: isSelected
-            ? `linear-gradient(rgba(74, 144, 226, 0.4), rgba(53, 122, 189, 0.6)), url(${backgroundImage})`
-            : "none",
-        }}
       >
         {isSelected ? (
           <CurrentDayInfo>
