@@ -1,5 +1,6 @@
 import React from "react";
 import styled, { keyframes } from "styled-components";
+import { FaSun } from "react-icons/fa";
 
 import clearSkyBg from "../assets/clear-sky.jpg";
 import cloudyBg from "../assets/cloudy.jpeg";
@@ -189,6 +190,11 @@ const SmallCard = styled.div`
   padding: 10px;
 `;
 
+const StyledSun = styled(FaSun)`
+  color: #ffd700; // Golden yellow color
+  filter: drop-shadow(0 0 2px rgba(255, 215, 0, 0.5));
+`;
+
 const getWeatherIcon = (condition) => {
   if (!condition) return "🌤";
   const conditions = condition.toLowerCase();
@@ -199,7 +205,8 @@ const getWeatherIcon = (condition) => {
     return "⚡️";
   if (conditions.includes("cloudy")) return "☁";
   if (conditions.includes("partly")) return "⛅";
-  if (conditions.includes("clear") || conditions.includes("sunny")) return "☀";
+  if (conditions.includes("clear") || conditions.includes("sunny"))
+    return <StyledSun />;
   return "🌤";
 };
 
