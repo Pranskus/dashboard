@@ -32,6 +32,23 @@ const Container = styled.div`
   width: 100%;
   box-sizing: border-box;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  @media (max-width: 1280px) {
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: auto;
+    height: auto;
+    min-height: 120px;
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto;
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto;
+  }
 `;
 
 const InfoCard = styled.div`
@@ -126,6 +143,10 @@ const CompassCard = styled(InfoCard)`
   grid-column: span 2;
   position: relative;
   height: 80px;
+
+  @media (max-width: 1280px) {
+    display: none; // Hide compass on smaller screens
+  }
 `;
 
 const CompassWrapper = styled.div`

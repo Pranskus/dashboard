@@ -13,6 +13,12 @@ const DashboardContainer = styled.div`
   height: 100%;
   width: 100%;
   margin-bottom: 40px;
+
+  @media (max-width: 1280px) {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
 `;
 
 const MainSection = styled.div`
@@ -26,6 +32,10 @@ const SideSection = styled.div`
   flex-direction: column;
   gap: 15px;
   width: 250px;
+
+  @media (max-width: 1280px) {
+    width: 100%;
+  }
 `;
 
 const ForecastContainer = styled.div`
@@ -36,7 +46,6 @@ const BottomSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
-  margin-top: 15px;
   width: 100%;
 `;
 
