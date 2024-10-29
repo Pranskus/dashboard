@@ -5,15 +5,14 @@ import axios from "axios";
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  width: 300px;
+  gap: 8px;
+  width: 250px;
 `;
 
 const Title = styled.h2`
   color: white;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   margin: 0;
-  padding: 0 10px; // Remove this padding
 `;
 
 const CityCard = styled.div`
@@ -23,12 +22,12 @@ const CityCard = styled.div`
     rgba(44, 62, 80, 0.2) 100%
   );
   backdrop-filter: blur(100px);
-  border-radius: 25px;
-  padding: 10px 20px 10px 20px;
+  border-radius: 20px;
+  padding: 8px 12px;
   color: white;
   transition: transform 0.3s ease;
 
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // Added drop shadow
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
   &:hover {
     transform: translateX(5px);
@@ -39,22 +38,23 @@ const CardContent = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 10px;
 `;
 
 const CityInfo = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 2px;
 `;
 
 const CityName = styled.h3`
   margin: 0;
-  font-size: 1.5rem;
+  font-size: 1rem;
   color: white;
 `;
 
 const DateText = styled.span`
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   color: #8e9eab;
 `;
 
@@ -62,19 +62,19 @@ const WeatherInfo = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 5px;
+  gap: 2px;
 `;
 
 const Temperature = styled.div`
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: bold;
   line-height: 1;
 `;
 
 const WeatherIcon = styled.div`
-  font-size: 1.8rem;
+  font-size: 1.4rem;
   color: #4a90e2;
-  margin-bottom: 5px;
+  margin-bottom: 2px;
 `;
 
 const LoadingText = styled.div`

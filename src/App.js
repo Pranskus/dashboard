@@ -61,12 +61,17 @@ const MainContent = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  padding: 40px 100px 10px 100px;
+  gap: 15px;
+  padding: 15px 40px;
   width: 100%;
   margin: 0 auto;
   box-sizing: border-box;
   overflow-y: auto;
+
+  @media (max-width: 768px) {
+    padding: 10px 15px;
+    gap: 10px;
+  }
 `;
 
 function App() {

@@ -65,7 +65,7 @@ const Card = styled.div`
   background-repeat: no-repeat;
   background-attachment: local;
   border-radius: 25px;
-  padding: ${(props) => (props.selected ? "25px" : "15px")};
+  padding: 12px;
   color: white;
   flex-grow: ${(props) => (props.selected ? 3 : 1)};
   flex-shrink: 1;
@@ -78,7 +78,7 @@ const Card = styled.div`
   position: relative;
   overflow: hidden;
   min-width: 80px;
-  flex-basis: ${(props) => (props.selected ? "300px" : "100px")};
+  flex-basis: ${(props) => (props.selected ? "250px" : "80px")};
   animation: ${(props) => (props.selected ? moveBackground : "none")} 10s
     ease-in-out infinite;
 
@@ -93,6 +93,11 @@ const Card = styled.div`
     background-size: ${(props) => (props.selected ? "150% auto" : "cover")};
     background-position: center;
     background-repeat: no-repeat;
+  }
+
+  @media (max-width: 768px) {
+    min-height: ${(props) => (props.selected ? "250px" : "120px")};
+    padding: 8px;
   }
 `;
 
@@ -125,17 +130,17 @@ const BottomRow = styled.div`
 
 const Day = styled.h3`
   margin: 0;
-  font-size: ${(props) => (props.current ? "2rem" : "1.2rem")};
+  font-size: ${(props) => (props.current ? "1.6rem" : "1rem")};
   font-weight: bold;
   text-align: center;
   color: white;
 `;
 
 const WeatherIconWrapper = styled.div`
-  width: ${(props) => (props.current ? "80px" : "70px")};
-  height: ${(props) => (props.current ? "80px" : "70px")};
+  width: ${(props) => (props.current ? "60px" : "50px")};
+  height: ${(props) => (props.current ? "60px" : "50px")};
   animation: ${float} 3s ease-in-out infinite;
-  font-size: ${(props) => (props.current ? "3.5rem" : "2.5rem")};
+  font-size: ${(props) => (props.current ? "2.5rem" : "2rem")};
   border-radius: 50%;
   padding: 10px;
   display: flex;
@@ -150,7 +155,7 @@ const WeatherIconWrapper = styled.div`
 `;
 
 const Temperature = styled.p`
-  font-size: ${(props) => (props.current ? "3.5rem" : "1.8rem")};
+  font-size: ${(props) => (props.current ? "2.5rem" : "1.5rem")};
   margin: 0;
   font-weight: bold;
   color: white;
@@ -161,7 +166,7 @@ const DetailRow = styled.p`
   display: flex;
   justify-content: space-between;
   background: rgba(50, 50, 50, 0.2);
-  padding: 10px 15px;
+  padding: 8px 12px;
   border-radius: 15px;
   transition: background 0.3s ease;
 

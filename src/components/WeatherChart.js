@@ -19,13 +19,18 @@ const ChartContainer = styled.div`
   );
   backdrop-filter: blur(100px);
   border-radius: 25px;
-  padding: 10px 20px 10px 20px;
+  padding: 8px 15px;
   color: white;
   width: 100%;
   box-sizing: border-box;
-  height: 330px;
+  height: 250px;
   position: relative;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // Added drop shadow
+
+  @media (max-width: 768px) {
+    height: 200px;
+    padding: 8px;
+  }
 `;
 
 // Custom tooltip component

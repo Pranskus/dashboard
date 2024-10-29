@@ -21,13 +21,13 @@ const Container = styled.div`
     rgba(44, 62, 80, 0.2) 100%
   );
   backdrop-filter: blur(100px);
-  border-radius: 25px;
-  padding: 20px;
+  border-radius: 20px;
+  padding: 10px;
   color: white;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  gap: 20px;
+  gap: 10px;
   height: 100%;
   width: 100%;
   box-sizing: border-box;
@@ -35,31 +35,31 @@ const Container = styled.div`
 `;
 
 const InfoCard = styled.div`
-  border-radius: 20px;
-  padding: 20px 10px; // Increased vertical padding
+  border-radius: 15px;
+  padding: 12px 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center; // Add this to center content vertically
+  justify-content: center;
   transition:
     transform 0.3s ease,
     background 0.3s ease;
 
   &:hover {
-    transform: translateY(-5px);
+    transform: translateY(-3px);
     background: rgba(255, 255, 255, 0.1);
   }
 `;
 
 const IconWrapper = styled.div`
-  font-size: 2.5rem;
-  margin-bottom: 10px;
+  font-size: 1.8rem;
+  margin-bottom: 6px;
   color: #4a90e2;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 60px;
-  height: 60px;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
   background: rgba(74, 144, 226, 0.1);
   transition: all 0.3s ease;
@@ -71,13 +71,13 @@ const IconWrapper = styled.div`
 `;
 
 const Label = styled.span`
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   color: #8e9eab;
-  margin-bottom: 5px;
+  margin-bottom: 3px;
 `;
 
 const Value = styled.span`
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: bold;
   color: #ffffff;
 `;
@@ -117,21 +117,21 @@ const formatTime = (timeStr) => {
 
 const Title = styled.h2`
   color: white;
-  margin: 0 0 0 0;
-  font-size: 1.5rem;
+  margin: 0;
+  font-size: 1.2rem;
   padding: 0 10px; // Remove this padding
 `;
 
 const CompassCard = styled(InfoCard)`
   grid-column: span 2;
   position: relative;
-  height: 100px;
+  height: 80px;
 `;
 
 const CompassWrapper = styled.div`
   position: relative;
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   background: rgba(74, 144, 226, 0.1);
   display: flex;
@@ -141,7 +141,7 @@ const CompassWrapper = styled.div`
 `;
 
 const CompassArrow = styled(FaLocationArrow)`
-  font-size: 2rem;
+  font-size: 1.5rem;
   color: #4a90e2;
   transform: rotate(${(props) => props.degree}deg);
   transition: transform 0.5s ease;
@@ -149,28 +149,20 @@ const CompassArrow = styled(FaLocationArrow)`
 
 const DirectionLabel = styled.div`
   position: absolute;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   color: #8e9eab;
 
   &.north {
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
+    top: 8px;
   }
   &.south {
-    bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
+    bottom: 8px;
   }
   &.east {
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
+    right: 8px;
   }
   &.west {
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
+    left: 8px;
   }
 `;
 

@@ -6,30 +6,30 @@ import { MdLocationOn, MdSearch } from "react-icons/md";
 
 const HeaderWrapper = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: left;
   width: 100%;
-  padding: 15px 0 0 0;
+  padding: 10px 0 0 40px;
 `;
 
 const HeaderContainer = styled.header`
   display: flex;
-  align-items: center;
+  align-items: left;
   gap: 20px;
   background-color: transparent;
   width: 100%;
-  max-width: 1200px;
+  max-width: 600px;
 `;
 
 const LocationContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 8px;
-  color: white;
-  font-size: 1.2rem;
+  gap: 6px;
+  color: #fff;
+  font-size: 0.8rem;
 `;
 
 const LocationIcon = styled(MdLocationOn)`
-  font-size: 1.5rem;
+  font-size: 1.3rem;
 `;
 
 const SearchContainer = styled.div`
@@ -48,10 +48,11 @@ const SearchBar = styled.input`
   background-color: rgba(255, 255, 255, 0.1);
   border: none;
   border-radius: 50px;
-  padding: 15px 50px;
+  padding: 10px 45px;
   color: white;
-  font-size: 1rem;
+  font-size: 0.8rem;
   width: 100%;
+  height: 10px;
   transition: all 0.3s ease;
 
   &::placeholder {
@@ -66,25 +67,25 @@ const SearchBar = styled.input`
 
 const SearchIcon = styled(MdSearch)`
   position: absolute;
-  left: 20px;
+  left: 15px;
   top: 50%;
   transform: translateY(-50%);
   color: white;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   pointer-events: none;
 `;
 
 const SuggestionsList = styled.ul`
   position: absolute;
-  top: calc(100% + 10px);
+  top: calc(100% + 8px);
   left: 0;
   right: 0;
   background-color: rgba(44, 44, 44, 0.95);
-  border-radius: 15px;
+  border-radius: 12px;
   list-style-type: none;
-  padding: 10px 0;
+  padding: 8px 0;
   margin: 0;
-  max-height: 300px;
+  max-height: 250px;
   overflow-y: auto;
   z-index: 1000;
   backdrop-filter: blur(10px);
@@ -92,9 +93,10 @@ const SuggestionsList = styled.ul`
 `;
 
 const SuggestionItem = styled.li`
-  padding: 12px 20px;
+  padding: 8px 15px;
   cursor: pointer;
   color: white;
+  font-size: 0.9rem;
   transition: background-color 0.2s ease;
 
   &:hover {
