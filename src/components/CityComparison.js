@@ -135,9 +135,11 @@ const CityComparison = ({ hideTitle }) => {
   const getWeatherIcon = (condition) => {
     if (!condition) return "🌤";
     const conditions = condition.toLowerCase();
-    if (conditions.includes("snow")) return "🌨";
+    if (conditions.includes("snow") || conditions.includes("flurries"))
+      return "❄️";
     if (conditions.includes("rain")) return "🌧";
-    if (conditions.includes("thunder")) return "⛈";
+    if (conditions.includes("thunder") || conditions.includes("storm"))
+      return "⚡️";
     if (conditions.includes("cloudy")) return "☁";
     if (conditions.includes("partly")) return "⛅";
     if (conditions.includes("clear") || conditions.includes("sunny"))

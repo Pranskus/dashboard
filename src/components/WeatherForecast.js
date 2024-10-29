@@ -1,13 +1,6 @@
 import React from "react";
 import styled, { keyframes } from "styled-components";
 
-import { ReactComponent as RainyIcon } from "../assets/Rainy.svg";
-import { ReactComponent as ThunderstormIcon } from "../assets/Thunderstorm.svg";
-import { ReactComponent as PartlyCloudyIcon } from "../assets/PartlyCloudy.svg";
-import { ReactComponent as CloudyIcon } from "../assets/Cloudy.svg";
-import { ReactComponent as SunIcon } from "../assets/Sunny.svg";
-import { ReactComponent as SnowIcon } from "../assets/Snow.svg";
-
 import clearSkyBg from "../assets/clear-sky.jpg";
 import cloudyBg from "../assets/cloudy.jpeg";
 import rainyBg from "../assets/rainy.jpg";
@@ -127,7 +120,7 @@ const WeatherIconWrapper = styled.div`
   width: ${(props) => (props.current ? "80px" : "70px")};
   height: ${(props) => (props.current ? "80px" : "70px")};
   animation: ${float} 3s ease-in-out infinite;
-
+  font-size: ${(props) => (props.current ? "3.5rem" : "2.5rem")};
   border-radius: 50%;
   padding: 10px;
   display: flex;
@@ -137,12 +130,7 @@ const WeatherIconWrapper = styled.div`
 
   &:hover {
     transform: rotate(360deg);
-
-    img,
-    svg {
-      transform: scale(1.5); /* Scale the icon slightly */
-      transition: transform 0.3s ease; /* Smooth scaling */
-    }
+    font-size: ${(props) => (props.current ? "4rem" : "3rem")};
   }
 `;
 
@@ -188,30 +176,17 @@ const SmallCard = styled.div`
 `;
 
 const getWeatherIcon = (condition) => {
-  if (!condition) return PartlyCloudyIcon;
-
+  if (!condition) return "🌤";
   const conditions = condition.toLowerCase();
-
-  if (conditions.includes("snow")) {
-    return SnowIcon; // Updated to use snow icon
-  }
-  if (conditions.includes("rain")) {
-    return RainyIcon;
-  }
-  if (conditions.includes("thunder") || conditions.includes("storm")) {
-    return ThunderstormIcon;
-  }
-  if (conditions.includes("cloudy") || conditions.includes("overcast")) {
-    return CloudyIcon;
-  }
-  if (conditions.includes("partly") || conditions.includes("partially")) {
-    return PartlyCloudyIcon;
-  }
-  if (conditions.includes("clear") || conditions.includes("sunny")) {
-    return SunIcon;
-  }
-
-  return PartlyCloudyIcon;
+  if (conditions.includes("snow") || conditions.includes("flurries"))
+    return "❄️";
+  if (conditions.includes("rain")) return "🌧";
+  if (conditions.includes("thunder") || conditions.includes("storm"))
+    return "⚡️";
+  if (conditions.includes("cloudy")) return "☁";
+  if (conditions.includes("partly")) return "⛅";
+  if (conditions.includes("clear") || conditions.includes("sunny")) return "☀";
+  return "🌤";
 };
 
 const getBackgroundImage = (condition) => {
@@ -309,8 +284,18 @@ const WeatherForecast = ({
         : forecastType === "tomorrow"
           ? index === 1
           : selectedDay === index;
-    const WeatherIcon = getWeatherIcon(day.weather[0].main);
-    const backgroundImage = getBackgroundImage(day.weather[0].main);
+
+    // Debug the weather data
+    console.log(
+      "Weather data:",
+      day?.weather?.[0]?.description || day?.weather?.[0]?.main
+    );
+
+    // Get weather icon based on the weather description (more detailed) or main condition
+    const weatherIcon = getWeatherIcon(
+      day?.weather?.[0]?.description || day?.weather?.[0]?.main
+    );
+    const backgroundImage = getBackgroundImage(day?.weather?.[0]?.main);
 
     return (
       <Card
@@ -331,9 +316,7 @@ const WeatherForecast = ({
             </TopRow>
             <MiddleRow>
               <Temperature current>{Math.round(day.main.temp)}°</Temperature>
-              <WeatherIconWrapper current>
-                <WeatherIcon />
-              </WeatherIconWrapper>
+              <WeatherIconWrapper current>{weatherIcon}</WeatherIconWrapper>
             </MiddleRow>
             <BottomRow>
               <DetailRow>
@@ -359,9 +342,7 @@ const WeatherForecast = ({
             <Day>
               {weekDays[(currentDate.getDay() + index) % 7].slice(0, 3)}
             </Day>
-            <WeatherIconWrapper>
-              <WeatherIcon />
-            </WeatherIconWrapper>
+            <WeatherIconWrapper>{weatherIcon}</WeatherIconWrapper>
             <Temperature>{Math.round(day.main.temp)}°</Temperature>
           </SmallCard>
         )}
