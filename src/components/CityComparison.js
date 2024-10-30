@@ -7,6 +7,10 @@ const Container = styled.div`
   flex-direction: column;
   gap: 8px;
   width: 250px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 const Title = styled.h2`
@@ -32,6 +36,8 @@ const CityCard = styled.div`
   &:hover {
     transform: translateX(5px);
   }
+
+  width: 100%;
 `;
 
 const CardContent = styled.div`

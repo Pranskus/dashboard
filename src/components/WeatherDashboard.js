@@ -45,13 +45,6 @@ const ForecastContainer = styled.div`
 const BottomSection = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  width: 100%;
-`;
-
-const BottomTitles = styled.div`
-  display: grid;
-  grid-template-columns: 250px 1fr;
   gap: 15px;
   width: 100%;
 `;
@@ -59,8 +52,19 @@ const BottomTitles = styled.div`
 const BottomContent = styled.div`
   display: grid;
   grid-template-columns: 250px 1fr;
-  gap: 15px;
+  gap: 40px;
   width: 100%;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+`;
+
+const ContentSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 `;
 
 const Title = styled.h1`
@@ -94,16 +98,18 @@ const WeatherDashboard = React.memo(({ currentWeather, forecast }) => {
           />
         </ForecastContainer>
         <BottomSection>
-          <BottomTitles>
-            <Title>Other largest cities</Title>
-            <Title>Temperature next 7 days</Title>
-          </BottomTitles>
           <BottomContent>
-            <CityComparison hideTitle />
-            <WeatherChart
-              forecast={[currentWeather, ...forecast.slice(0, 6)]}
-              hideTitle
-            />
+            <ContentSection>
+              <Title>Other largest cities</Title>
+              <CityComparison hideTitle />
+            </ContentSection>
+            <ContentSection>
+              <Title>Temperature next 7 days</Title>
+              <WeatherChart
+                forecast={[currentWeather, ...forecast.slice(0, 6)]}
+                hideTitle
+              />
+            </ContentSection>
           </BottomContent>
         </BottomSection>
       </MainSection>
