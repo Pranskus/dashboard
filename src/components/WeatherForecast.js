@@ -41,7 +41,7 @@ const ForecastContainer = styled.div`
   gap: 20px;
   width: 100%;
   height: 100%;
-
+  flex-wrap: wrap;
   border-radius: 25px;
 
   ${(props) =>
@@ -52,6 +52,11 @@ const ForecastContainer = styled.div`
       flex: 1;
     }
   `}
+
+  @media (max-width: 768px) {
+    gap: 15px;
+    justify-content: center;
+  }
 `;
 const Card = styled.div`
   background: ${(props) => {
@@ -97,8 +102,13 @@ const Card = styled.div`
   }
 
   @media (max-width: 768px) {
-    min-height: ${(props) => (props.selected ? "250px" : "120px")};
-    padding: 8px;
+    flex-basis: ${(props) =>
+      props.selected ? "100%" : "calc(33.333% - 15px)"};
+    min-width: ${(props) => (props.selected ? "300px" : "80px")};
+  }
+
+  @media (max-width: 480px) {
+    flex-basis: ${(props) => (props.selected ? "100%" : "calc(50% - 15px)")};
   }
 `;
 
