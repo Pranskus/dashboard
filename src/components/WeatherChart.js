@@ -109,6 +109,8 @@ const TemperatureChart = ({ forecast }) => {
             tick={{ fill: "#8e9eab" }}
             unit="°"
             domain={["dataMin - 1", "dataMax + 1"]}
+            tickFormatter={(value) => Math.round(value)}
+            width={40}
           />
           <Tooltip
             content={<CustomTooltip />}
