@@ -77,8 +77,9 @@ const Card = styled.div`
   max-height: 100%;
   position: relative;
   overflow: hidden;
-  min-width: 80px;
-  flex-basis: ${(props) => (props.selected ? "250px" : "80px")};
+  flex-basis: ${(props) =>
+    props.selected ? "250px" : "80px"}; // Increased from 250px
+  min-width: ${(props) => (props.selected ? "200px" : "80px")}; // Add this line
   animation: ${(props) => (props.selected ? moveBackground : "none")} 10s
     ease-in-out infinite;
 
