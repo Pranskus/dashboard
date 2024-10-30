@@ -249,7 +249,12 @@ const TitleBar = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
-  padding: 0 10px; // Remove this padding
+  gap: 15px;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `;
 
 const Title = styled.h2`
@@ -261,6 +266,11 @@ const Title = styled.h2`
 const ButtonGroup = styled.div`
   display: flex;
   gap: 10px;
+
+  @media (max-width: 480px) {
+    width: 100%;
+    justify-content: space-between;
+  }
 `;
 
 const ForecastButton = styled.button`
@@ -282,6 +292,12 @@ const ForecastButton = styled.button`
         ? "linear-gradient(135deg, #4a90e2 0%, #357abd 100%)"
         : "rgba(74, 144, 226, 0.1)"};
     color: white;
+  }
+
+  @media (max-width: 480px) {
+    flex: 1;
+    padding: 8px 8px;
+    font-size: 0.9rem;
   }
 `;
 
