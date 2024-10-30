@@ -17,8 +17,8 @@ const getSafeValue = (value, defaultValue = "N/A") => {
 const Container = styled.div`
   background: linear-gradient(
     135deg,
-    rgba(30, 33, 48, 0.3) 0%,
-    rgba(44, 62, 80, 0.2) 100%
+    rgba(30, 33, 48, 0.2) 0%,
+    rgba(44, 62, 80, 0.1) 100%
   );
   backdrop-filter: blur(100px);
   border-radius: 20px;
@@ -38,16 +38,21 @@ const Container = styled.div`
     grid-template-rows: auto;
     height: auto;
     min-height: 120px;
+    margin-bottom: 20px;
+    backdrop-filter: blur(60px);
   }
 
   @media (max-width: 768px) {
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: auto;
+    backdrop-filter: blur(40px);
   }
 
   @media (max-width: 480px) {
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: auto;
+    margin-bottom: 30px;
+    backdrop-filter: blur(40px);
   }
 `;
 

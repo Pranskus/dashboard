@@ -9,6 +9,10 @@ const HeaderWrapper = styled.div`
   justify-content: left;
   width: 100%;
   padding: 10px 0 0 40px;
+
+  @media (max-width: 768px) {
+    padding: 10px 0 0 10px;
+  }
 `;
 
 const HeaderContainer = styled.header`
@@ -18,6 +22,12 @@ const HeaderContainer = styled.header`
   background-color: transparent;
   width: 100%;
   max-width: 600px;
+
+  @media (max-width: 768px) {
+    max-width: 100%;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
 `;
 
 const LocationContainer = styled.div`
@@ -36,6 +46,16 @@ const SearchContainer = styled.div`
   position: relative;
   flex-grow: 1;
   max-width: 800px;
+
+  @media (max-width: 768px) {
+    max-width: auto;
+    padding-right: 20px;
+  }
+
+  @media (max-width: 480px) {
+    max-width: auto;
+    padding-right: 20px;
+  }
 `;
 
 const SearchForm = styled.form`

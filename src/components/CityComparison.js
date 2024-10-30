@@ -5,8 +5,8 @@ import axios from "axios";
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  width: 250px;
+  gap: 12px;
+  width: 100%;
 
   @media (max-width: 768px) {
     width: 100%;
@@ -38,6 +38,7 @@ const CityCard = styled.div`
   }
 
   width: 100%;
+  box-sizing: border-box;
 `;
 
 const CardContent = styled.div`

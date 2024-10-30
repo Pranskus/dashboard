@@ -9,7 +9,7 @@ import WeatherChart from "./WeatherChart";
 const DashboardContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 250px;
-  gap: 15px;
+  gap: 20px;
   height: 100%;
   width: 100%;
   margin-bottom: 40px;
@@ -24,13 +24,13 @@ const DashboardContainer = styled.div`
 const MainSection = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 20px;
 `;
 
 const SideSection = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 30px;
   width: 250px;
 
   @media (max-width: 1280px) {
@@ -45,26 +45,26 @@ const ForecastContainer = styled.div`
 const BottomSection = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 10px;
   width: 100%;
 `;
 
 const BottomContent = styled.div`
   display: grid;
   grid-template-columns: 250px 1fr;
-  gap: 40px;
+  gap: 20px;
   width: 100%;
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 20px;
   }
 `;
 
 const ContentSection = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 `;
 
 const Title = styled.h1`
