@@ -68,10 +68,8 @@ const InfoCard = styled.div`
   &::before {
     content: "";
     position: absolute;
-    top: -20px;
-    left: -20px;
-    right: -20px;
-    bottom: -20px;
+    width: 100%;
+    height: 120%;
     background: linear-gradient(
       135deg,
       rgba(30, 33, 48, 0.3) 0%,
@@ -99,19 +97,15 @@ const InfoCard = styled.div`
 
   @media (max-width: 1024px) {
     &::before {
-      top: -25px;
-      left: -25px;
-      right: -25px;
-      bottom: -25px;
+      width: 100%;
+      height: 120%;
     }
   }
 
   @media (max-width: 600px) {
     &::before {
-      top: -30px;
-      left: -30px;
-      right: -30px;
-      bottom: -30px;
+      width: 100%;
+      height: 120%;
     }
   }
 `;
