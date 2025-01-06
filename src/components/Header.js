@@ -4,14 +4,22 @@ import axios from "axios";
 import { debounce } from "lodash";
 import { MdLocationOn, MdSearch } from "react-icons/md";
 
+const MaxWidthWrapper = styled.div`
+  max-width: 1920px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 20px;
+  box-sizing: border-box;
+`;
+
 const HeaderWrapper = styled.div`
   display: flex;
   justify-content: left;
   width: 100%;
-  padding: 10px 0 0 40px;
+  padding: 10px 0 0 0;
 
   @media (max-width: 768px) {
-    padding: 10px 0 0 10px;
+    padding: 10px 0 0 0;
   }
 `;
 
@@ -169,37 +177,39 @@ function Header({ onSearch, currentCity }) {
   };
 
   return (
-    <HeaderWrapper>
-      <HeaderContainer>
-        <LocationContainer>
-          <LocationIcon />
-          {currentCity || "Seattle, Australia"}
-        </LocationContainer>
-        <SearchContainer>
-          <SearchForm onSubmit={handleSubmit}>
-            <SearchIcon />
-            <SearchBar
-              type="text"
-              placeholder="Search city..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </SearchForm>
-          {suggestions.length > 0 && (
-            <SuggestionsList>
-              {suggestions.map((suggestion, index) => (
-                <SuggestionItem
-                  key={index}
-                  onClick={() => handleSuggestionClick(suggestion)}
-                >
-                  {suggestion.name}, {suggestion.country}
-                </SuggestionItem>
-              ))}
-            </SuggestionsList>
-          )}
-        </SearchContainer>
-      </HeaderContainer>
-    </HeaderWrapper>
+    <MaxWidthWrapper>
+      <HeaderWrapper>
+        <HeaderContainer>
+          <LocationContainer>
+            <LocationIcon />
+            {currentCity || "Seattle, Australia"}
+          </LocationContainer>
+          <SearchContainer>
+            <SearchForm onSubmit={handleSubmit}>
+              <SearchIcon />
+              <SearchBar
+                type="text"
+                placeholder="Search city..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </SearchForm>
+            {suggestions.length > 0 && (
+              <SuggestionsList>
+                {suggestions.map((suggestion, index) => (
+                  <SuggestionItem
+                    key={index}
+                    onClick={() => handleSuggestionClick(suggestion)}
+                  >
+                    {suggestion.name}, {suggestion.country}
+                  </SuggestionItem>
+                ))}
+              </SuggestionsList>
+            )}
+          </SearchContainer>
+        </HeaderContainer>
+      </HeaderWrapper>
+    </MaxWidthWrapper>
   );
 }
 
