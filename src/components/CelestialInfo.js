@@ -29,7 +29,7 @@ const Container = styled.div`
   width: 100%;
   box-sizing: border-box;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin: 0px 0 100px 0;
+  margin: 20px 0 100px 0;
   order: 999;
   position: relative;
 
