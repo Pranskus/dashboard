@@ -30,7 +30,7 @@ const Container = styled.div`
   box-sizing: border-box;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   min-height: 160px;
-  margin: 20px 0 100px 0;
+  margin: 0px 0 100px 0;
   order: 999;
   position: relative;
 
@@ -40,7 +40,7 @@ const Container = styled.div`
     min-height: auto;
     padding: 30px 20px;
     gap: 30px;
-    margin-bottom: 150px;
+    margin-bottom: 1000px;
   }
 
   @media (max-width: 600px) {
@@ -49,7 +49,7 @@ const Container = styled.div`
     min-height: auto;
     padding: 30px 15px;
     gap: 25px;
-    margin-bottom: 200px;
+    margin-bottom: 120px;
   }
 `;
 
