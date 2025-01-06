@@ -13,8 +13,8 @@ const DashboardContainer = styled.div`
   width: 100%;
   min-height: 100vh;
   position: relative;
-  padding-bottom: 300px;
   box-sizing: border-box;
+  overflow-y: auto;
 `;
 
 const MainSection = styled.div`
@@ -62,6 +62,12 @@ const Title = styled.h1`
   margin-bottom: 10px;
 `;
 
+const BottomWrapper = styled.div`
+  width: 100%;
+  padding-bottom: 20px;
+  box-sizing: border-box;
+`;
+
 const WeatherDashboard = React.memo(({ currentWeather, forecast }) => {
   const [selectedDayData, setSelectedDayData] = useState(currentWeather);
 
@@ -99,7 +105,9 @@ const WeatherDashboard = React.memo(({ currentWeather, forecast }) => {
           </BottomContent>
         </BottomSection>
       </MainSection>
-      <CelestialInfo data={selectedDayData} />
+      <BottomWrapper>
+        <CelestialInfo data={selectedDayData} />
+      </BottomWrapper>
     </DashboardContainer>
   );
 });
