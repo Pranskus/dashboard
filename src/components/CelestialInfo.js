@@ -19,7 +19,7 @@ const Container = styled.div`
     rgba(30, 33, 48, 0.3) 0%,
     rgba(44, 62, 80, 0.2) 100%
   );
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(100px);
   border-radius: 25px;
   padding: 25px 20px;
   color: white;
@@ -29,25 +29,24 @@ const Container = styled.div`
   width: 100%;
   box-sizing: border-box;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  min-height: 160px;
-  margin: 0px 0 100px 0;
+  margin: 0px 0 300px 0;
   order: 999;
   position: relative;
 
   @media (max-width: 1024px) {
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2, 1fr);
-    min-height: auto;
     padding: 30px 20px;
     gap: 30px;
+    margin-bottom: 300px;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 600px) {
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    min-height: auto;
     padding: 30px 15px;
     gap: 25px;
+    margin-bottom: 300px;
   }
 `;
 

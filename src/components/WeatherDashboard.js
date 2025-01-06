@@ -12,9 +12,9 @@ const DashboardContainer = styled.div`
   gap: 20px;
   width: 100%;
   min-height: 100vh;
-  margin-bottom: 200px;
-  box-sizing: border-box;
   position: relative;
+  padding-bottom: 300px;
+  box-sizing: border-box;
 `;
 
 const MainSection = styled.div`
