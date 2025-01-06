@@ -16,11 +16,11 @@ const getSafeValue = (value, defaultValue = "N/A") => {
 const Container = styled.div`
   background: linear-gradient(
     135deg,
-    rgba(30, 33, 48, 0.95) 0%,
-    rgba(44, 62, 80, 0.9) 100%
+    rgba(30, 33, 48, 0.3) 0%,
+    rgba(44, 62, 80, 0.2) 100%
   );
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
+  backdrop-filter: blur(100px);
+  border-radius: 25px;
   padding: 25px 20px;
   color: white;
   display: grid;
@@ -28,12 +28,11 @@ const Container = styled.div`
   gap: 20px;
   width: 100%;
   box-sizing: border-box;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   min-height: 160px;
   margin: 20px 0 100px 0;
   order: 999;
   position: relative;
-  overflow: hidden;
 
   @media (max-width: 1024px) {
     grid-template-columns: repeat(3, 1fr);
@@ -41,6 +40,7 @@ const Container = styled.div`
     min-height: 300px;
     padding: 30px 20px;
     gap: 30px;
+    margin-bottom: 150px;
   }
 
   @media (max-width: 600px) {
@@ -49,38 +49,70 @@ const Container = styled.div`
     min-height: 420px;
     padding: 30px 15px;
     gap: 25px;
+    margin-bottom: 200px;
   }
 `;
 
 const InfoCard = styled.div`
-  border-radius: 15px;
-  padding: 20px 10px;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 15px;
-  transition:
-    transform 0.3s ease,
-    background 0.3s ease;
-  height: 100%;
   width: 100%;
-  min-height: 120px;
-  box-sizing: border-box;
+  height: 100%;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    right: -20px;
+    bottom: -20px;
+    background: linear-gradient(
+      135deg,
+      rgba(30, 33, 48, 0.3) 0%,
+      rgba(44, 62, 80, 0.2) 100%
+    );
+    backdrop-filter: blur(100px);
+    border-radius: 15px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 0;
+  }
 
   &:hover {
     transform: translateY(-3px);
-    background: rgba(255, 255, 255, 0.1);
+
+    &::before {
+      opacity: 1;
+    }
+  }
+
+  & > * {
+    position: relative;
+    z-index: 1;
   }
 
   @media (max-width: 1024px) {
-    min-height: 130px;
-    padding: 15px;
+    &::before {
+      top: -25px;
+      left: -25px;
+      right: -25px;
+      bottom: -25px;
+    }
   }
 
   @media (max-width: 600px) {
-    min-height: 140px;
-    padding: 20px 15px;
+    &::before {
+      top: -30px;
+      left: -30px;
+      right: -30px;
+      bottom: -30px;
+    }
   }
 `;
 
