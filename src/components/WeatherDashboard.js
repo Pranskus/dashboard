@@ -7,35 +7,18 @@ import CityComparison from "./CityComparison";
 import WeatherChart from "./WeatherChart";
 
 const DashboardContainer = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 250px;
+  display: flex;
+  flex-direction: column;
   gap: 20px;
-  height: 100%;
   width: 100%;
-  margin-bottom: 40px;
-
-  @media (max-width: 1280px) {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
+  height: 100%;
 `;
 
 const MainSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-`;
-
-const SideSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-  width: 250px;
-
-  @media (max-width: 1280px) {
-    width: 100%;
-  }
+  width: 100%;
 `;
 
 const ForecastContainer = styled.div`
@@ -113,9 +96,7 @@ const WeatherDashboard = React.memo(({ currentWeather, forecast }) => {
           </BottomContent>
         </BottomSection>
       </MainSection>
-      <SideSection>
-        <CelestialInfo data={selectedDayData} />
-      </SideSection>
+      <CelestialInfo data={selectedDayData} />
     </DashboardContainer>
   );
 });

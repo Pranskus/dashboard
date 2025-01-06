@@ -67,6 +67,7 @@ const MainContent = styled.div`
   margin: 0 auto;
   box-sizing: border-box;
   overflow-y: auto;
+  min-height: 100%;
 
   @media (max-width: 768px) {
     padding: 10px 15px;

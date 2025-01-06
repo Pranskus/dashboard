@@ -8,7 +8,6 @@ import {
   WiStrongWind,
   WiWindDeg,
 } from "react-icons/wi";
-import { FaLocationArrow } from "react-icons/fa";
 
 const getSafeValue = (value, defaultValue = "N/A") => {
   return value !== undefined && value !== null ? value : defaultValue;
@@ -17,91 +16,127 @@ const getSafeValue = (value, defaultValue = "N/A") => {
 const Container = styled.div`
   background: linear-gradient(
     135deg,
-    rgba(30, 33, 48, 0.2) 0%,
-    rgba(44, 62, 80, 0.1) 100%
+    rgba(30, 33, 48, 0.95) 0%,
+    rgba(44, 62, 80, 0.9) 100%
   );
-  backdrop-filter: blur(100px);
+  backdrop-filter: blur(10px);
   border-radius: 20px;
-  padding: 10px;
+  padding: 25px 20px;
   color: white;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(3, 1fr);
-  gap: 10px;
-  height: 100%;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 20px;
   width: 100%;
   box-sizing: border-box;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  min-height: 160px;
+  margin: 20px 0 100px 0;
+  order: 999;
+  position: relative;
+  overflow: hidden;
 
-  @media (max-width: 1280px) {
-    grid-template-columns: repeat(6, 1fr);
-    grid-template-rows: auto;
-    height: auto;
-    min-height: 120px;
-    margin-bottom: 20px;
-    backdrop-filter: blur(60px);
-  }
-
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: auto;
-    backdrop-filter: blur(40px);
+    grid-template-rows: repeat(2, 1fr);
+    min-height: 300px;
+    padding: 30px 20px;
+    gap: 30px;
   }
 
-  @media (max-width: 480px) {
+  @media (max-width: 600px) {
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: auto;
-    margin-bottom: 30px;
-    backdrop-filter: blur(40px);
+    grid-template-rows: repeat(3, 1fr);
+    min-height: 420px;
+    padding: 30px 15px;
+    gap: 25px;
   }
 `;
 
 const InfoCard = styled.div`
   border-radius: 15px;
-  padding: 12px 8px;
+  padding: 20px 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 15px;
   transition:
     transform 0.3s ease,
     background 0.3s ease;
+  height: 100%;
+  width: 100%;
+  min-height: 120px;
+  box-sizing: border-box;
 
   &:hover {
     transform: translateY(-3px);
     background: rgba(255, 255, 255, 0.1);
   }
+
+  @media (max-width: 1024px) {
+    min-height: 130px;
+    padding: 15px;
+  }
+
+  @media (max-width: 600px) {
+    min-height: 140px;
+    padding: 20px 15px;
+  }
 `;
 
 const IconWrapper = styled.div`
-  font-size: 1.8rem;
-  margin-bottom: 6px;
+  font-size: 2rem;
   color: #4a90e2;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 45px;
-  height: 45px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   background: rgba(74, 144, 226, 0.1);
   transition: all 0.3s ease;
+  aspect-ratio: 1;
+  object-fit: contain;
+
+  svg,
+  img {
+    width: 60%;
+    height: 60%;
+    object-fit: contain;
+  }
 
   &:hover {
     transform: rotate(360deg);
     background: rgba(74, 144, 226, 0.2);
   }
+
+  @media (max-width: 600px) {
+    width: 60px;
+    height: 60px;
+    font-size: 2.2rem;
+  }
 `;
 
 const Label = styled.span`
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   color: #8e9eab;
-  margin-bottom: 3px;
+  margin-bottom: 4px;
+  text-align: center;
+
+  @media (max-width: 600px) {
+    font-size: 0.9rem;
+  }
 `;
 
 const Value = styled.span`
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: bold;
   color: #ffffff;
+  text-align: center;
+
+  @media (max-width: 600px) {
+    font-size: 1.2rem;
+  }
 `;
 
 const getMoonPhaseIcon = (phase) => {
@@ -142,54 +177,6 @@ const Title = styled.h2`
   margin: 0;
   font-size: 1.2rem;
   padding: 0 10px; // Remove this padding
-`;
-
-const CompassCard = styled(InfoCard)`
-  grid-column: span 2;
-  position: relative;
-  height: 80px;
-
-  @media (max-width: 1280px) {
-    display: none; // Hide compass on smaller screens
-  }
-`;
-
-const CompassWrapper = styled.div`
-  position: relative;
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  background: rgba(74, 144, 226, 0.1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto;
-`;
-
-const CompassArrow = styled(FaLocationArrow)`
-  font-size: 1.5rem;
-  color: #4a90e2;
-  transform: rotate(${(props) => props.degree}deg);
-  transition: transform 0.5s ease;
-`;
-
-const DirectionLabel = styled.div`
-  position: absolute;
-  font-size: 0.7rem;
-  color: #8e9eab;
-
-  &.north {
-    top: 8px;
-  }
-  &.south {
-    bottom: 8px;
-  }
-  &.east {
-    right: 8px;
-  }
-  &.west {
-    left: 8px;
-  }
 `;
 
 const CelestialInfo = ({ data }) => {
@@ -265,16 +252,6 @@ const CelestialInfo = ({ data }) => {
           <Label>Wind Direction</Label>
           <Value>{getWindDirection(windDirection)}</Value>
         </InfoCard>
-
-        <CompassCard>
-          <CompassWrapper>
-            <CompassArrow degree={windDirection} />
-            <DirectionLabel className="north">N</DirectionLabel>
-            <DirectionLabel className="south">S</DirectionLabel>
-            <DirectionLabel className="east">E</DirectionLabel>
-            <DirectionLabel className="west">W</DirectionLabel>
-          </CompassWrapper>
-        </CompassCard>
       </Container>
     </>
   );
