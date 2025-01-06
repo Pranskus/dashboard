@@ -37,7 +37,7 @@ const Container = styled.div`
   @media (max-width: 1024px) {
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2, 1fr);
-    min-height: 300px;
+    min-height: auto;
     padding: 30px 20px;
     gap: 30px;
     margin-bottom: 150px;
@@ -46,7 +46,7 @@ const Container = styled.div`
   @media (max-width: 600px) {
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    min-height: 420px;
+    min-height: auto;
     padding: 30px 15px;
     gap: 25px;
     margin-bottom: 200px;
