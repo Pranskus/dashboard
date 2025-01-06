@@ -19,7 +19,7 @@ const Container = styled.div`
     rgba(30, 33, 48, 0.3) 0%,
     rgba(44, 62, 80, 0.2) 100%
   );
-  backdrop-filter: blur(100px);
+  backdrop-filter: blur(10px);
   border-radius: 25px;
   padding: 25px 20px;
   color: white;
