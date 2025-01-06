@@ -6,6 +6,14 @@ import CelestialInfo from "./CelestialInfo";
 import CityComparison from "./CityComparison";
 import WeatherChart from "./WeatherChart";
 
+const MaxWidthWrapper = styled.div`
+  max-width: 1920px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 20px;
+  box-sizing: border-box;
+`;
+
 const DashboardContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -80,35 +88,37 @@ const WeatherDashboard = React.memo(({ currentWeather, forecast }) => {
   );
 
   return (
-    <DashboardContainer data-testid="weather-dashboard">
-      <MainSection>
-        <ForecastContainer>
-          <WeatherForecast
-            currentWeather={currentWeather}
-            forecast={forecast}
-            onDaySelect={handleDaySelect}
-          />
-        </ForecastContainer>
-        <BottomSection>
-          <BottomContent>
-            <ContentSection>
-              <Title>Other largest cities</Title>
-              <CityComparison hideTitle />
-            </ContentSection>
-            <ContentSection>
-              <Title>Temperature next 7 days</Title>
-              <WeatherChart
-                forecast={[currentWeather, ...forecast.slice(0, 6)]}
-                hideTitle
-              />
-            </ContentSection>
-          </BottomContent>
-        </BottomSection>
-      </MainSection>
-      <BottomWrapper>
-        <CelestialInfo data={selectedDayData} />
-      </BottomWrapper>
-    </DashboardContainer>
+    <MaxWidthWrapper>
+      <DashboardContainer data-testid="weather-dashboard">
+        <MainSection>
+          <ForecastContainer>
+            <WeatherForecast
+              currentWeather={currentWeather}
+              forecast={forecast}
+              onDaySelect={handleDaySelect}
+            />
+          </ForecastContainer>
+          <BottomSection>
+            <BottomContent>
+              <ContentSection>
+                <Title>Other largest cities</Title>
+                <CityComparison hideTitle />
+              </ContentSection>
+              <ContentSection>
+                <Title>Temperature next 7 days</Title>
+                <WeatherChart
+                  forecast={[currentWeather, ...forecast.slice(0, 6)]}
+                  hideTitle
+                />
+              </ContentSection>
+            </BottomContent>
+          </BottomSection>
+        </MainSection>
+        <BottomWrapper>
+          <CelestialInfo data={selectedDayData} />
+        </BottomWrapper>
+      </DashboardContainer>
+    </MaxWidthWrapper>
   );
 });
 
