@@ -40,16 +40,14 @@ const Container = styled.div`
     min-height: auto;
     padding: 30px 20px;
     gap: 30px;
-    margin-bottom: 1000px;
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 768px) {
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(3, 1fr);
     min-height: auto;
     padding: 30px 15px;
     gap: 25px;
-    margin-bottom: 200px;
   }
 `;
 
