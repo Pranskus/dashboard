@@ -102,7 +102,7 @@ const WeatherDashboard = React.memo(({ currentWeather, forecast }) => {
             <BottomContent>
               <ContentSection>
                 <Title>Other largest cities</Title>
-                <CityComparison hideTitle />
+                <CityComparison hideTitle currentCity={currentWeather.name} />
               </ContentSection>
               <ContentSection>
                 <Title>Temperature next 7 days</Title>

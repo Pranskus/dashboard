@@ -89,7 +89,20 @@ const LoadingText = styled.div`
   font-size: 1rem;
 `;
 
-const CityComparison = ({ hideTitle }) => {
+const CITIES_BY_COUNTRY = {
+  LT: ["Vilnius,LT", "Kaunas,LT", "Klaipėda,LT"],
+  US: ["New York,US", "Los Angeles,US", "Chicago,US"],
+  GB: ["London,GB", "Birmingham,GB", "Manchester,GB"],
+  DE: ["Berlin,DE", "Hamburg,DE", "Munich,DE"],
+  FR: ["Paris,FR", "Marseille,FR", "Lyon,FR"],
+  ES: ["Madrid,ES", "Barcelona,ES", "Valencia,ES"],
+  IT: ["Rome,IT", "Milan,IT", "Naples,IT"],
+  // Add more countries as needed
+};
+
+const DEFAULT_COUNTRY = "LT"; // Default to Lithuanian cities
+
+const CityComparison = ({ hideTitle, currentCity }) => {
   const [citiesData, setCitiesData] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -97,15 +110,33 @@ const CityComparison = ({ hideTitle }) => {
     date: "",
     time: "",
   });
+  const [selectedCountry, setSelectedCountry] = useState(DEFAULT_COUNTRY);
 
-  const cities = ["Vilnius,LT", "Kaunas,LT", "Klaipėda,LT"];
+  // Update selected country when currentCity changes
+  useEffect(() => {
+    if (currentCity) {
+      const countryCode = currentCity.split(",")[1]?.trim();
+      if (countryCode && CITIES_BY_COUNTRY[countryCode]) {
+        setSelectedCountry(countryCode);
+      }
+    }
+  }, [currentCity]);
+
+  // Get the cities to display based on the selected country
+  const getCitiesToDisplay = () => {
+    return (
+      CITIES_BY_COUNTRY[selectedCountry] || CITIES_BY_COUNTRY[DEFAULT_COUNTRY]
+    );
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
         const API_KEY = "6PNY9WT9YSL482LUA525EZL8L";
-        const requests = cities.map((city) =>
+        const citiesToFetch = getCitiesToDisplay();
+
+        const requests = citiesToFetch.map((city) =>
           fetch(
             `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${city}?unitGroup=metric&key=${API_KEY}&contentType=json`
           ).then((response) => response.json())
@@ -114,7 +145,7 @@ const CityComparison = ({ hideTitle }) => {
         const responses = await Promise.all(requests);
         const data = {};
         responses.forEach((response, index) => {
-          data[cities[index]] = {
+          data[citiesToFetch[index]] = {
             temp: response.currentConditions.temp,
             conditions: response.currentConditions.conditions,
           };
@@ -144,7 +175,7 @@ const CityComparison = ({ hideTitle }) => {
     };
 
     fetchData();
-  }, []);
+  }, [selectedCountry]); // Fetch data when selected country changes
 
   const getWeatherIcon = (condition) => {
     if (!condition) return "🌤";
@@ -183,7 +214,7 @@ const CityComparison = ({ hideTitle }) => {
     <>
       {!hideTitle && <Title>Other largest cities</Title>}
       <Container>
-        {cities.map((city) => {
+        {getCitiesToDisplay().map((city) => {
           const cityName = city.split(",")[0];
           return (
             <CityCard key={city}>
