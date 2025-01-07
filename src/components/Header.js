@@ -146,9 +146,13 @@ function Header({ onSearch, currentCity }) {
       try {
         const API_KEY = process.env.REACT_APP_OPENWEATHERMAP_API_KEY;
         const response = await axios.get(
-          `http://api.openweathermap.org/geo/1.0/direct?q=${input}&limit=5&appid=${API_KEY}`
+          `https://api.openweathermap.org/geo/1.0/direct?q=${input}&limit=5&appid=${API_KEY}`
         );
-        setSuggestions(response.data);
+        if (response.data.length > 0) {
+          setSuggestions(response.data);
+        } else {
+          setSuggestions([]);
+        }
       } catch (error) {
         console.error("Error fetching suggestions:", error);
       }
