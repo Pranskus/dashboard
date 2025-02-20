@@ -2,6 +2,16 @@ import React from "react";
 import styled from "styled-components";
 import { WiDaySunny, WiCloudy, WiRain } from "react-icons/wi";
 
+interface CityData {
+  name: string;
+  weather: string;
+  temp: number;
+}
+
+interface WeatherIconProps {
+  weather: string;
+}
+
 const Container = styled.div`
   background-color: #2c2c2c;
   border-radius: 10px;
@@ -43,25 +53,25 @@ const Temperature = styled.span`
   font-size: 1.1rem;
 `;
 
-function OtherCities() {
-  const cities = [
+const getWeatherIcon = (weather: string) => {
+  switch (weather.toLowerCase()) {
+    case "sunny":
+      return <WiDaySunny />;
+    case "cloudy":
+      return <WiCloudy />;
+    case "rainy":
+      return <WiRain />;
+    default:
+      return <WiDaySunny />;
+  }
+};
+
+function OtherCities(): React.ReactElement {
+  const cities: CityData[] = [
     { name: "Kaunas", weather: "Cloudy", temp: 18 },
     { name: "Riga", weather: "Sunny", temp: 20 },
     { name: "Tallinn", weather: "Rainy", temp: 17 },
   ];
-
-  const getWeatherIcon = (weather) => {
-    switch (weather.toLowerCase()) {
-      case "sunny":
-        return <WiDaySunny />;
-      case "cloudy":
-        return <WiCloudy />;
-      case "rainy":
-        return <WiRain />;
-      default:
-        return <WiDaySunny />;
-    }
-  };
 
   return (
     <Container>

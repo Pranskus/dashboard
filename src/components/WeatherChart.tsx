@@ -11,6 +11,23 @@ import {
   Area,
 } from "recharts";
 
+interface WeatherData {
+  main: {
+    temp: number;
+  };
+}
+
+interface ChartProps {
+  forecast: WeatherData[];
+}
+
+interface TooltipProps {
+  active?: boolean;
+  payload?: Array<{
+    value: number;
+  }>;
+}
+
 const ChartContainer = styled.div`
   background: linear-gradient(
     135deg,
@@ -33,8 +50,10 @@ const ChartContainer = styled.div`
   }
 `;
 
-// Custom tooltip component
-const CustomTooltip = ({ active, payload }) => {
+const CustomTooltip = ({
+  active,
+  payload,
+}: TooltipProps): React.ReactElement | null => {
   if (active && payload && payload.length) {
     return (
       <div
@@ -52,20 +71,14 @@ const CustomTooltip = ({ active, payload }) => {
   return null;
 };
 
-const TemperatureChart = ({ forecast }) => {
+const TemperatureChart = ({ forecast }: ChartProps): React.ReactElement => {
   const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const currentDate = new Date();
 
-  // Format data for Recharts
   const data = forecast.map((day, index) => ({
     day: weekDays[(currentDate.getDay() + index) % 7],
     temperature: day.main.temp,
   }));
-
-  const options = {
-    maintainAspectRatio: false,
-    responsive: true,
-  };
 
   return (
     <ChartContainer>
@@ -73,8 +86,6 @@ const TemperatureChart = ({ forecast }) => {
         <LineChart
           data={data}
           margin={{ top: 20, right: 30, left: 0, bottom: 10 }}
-          options={options}
-          height="100%"
         >
           <defs>
             <linearGradient id="lineGradient" x1="0" y1="0" x2="1" y2="0">
@@ -109,7 +120,7 @@ const TemperatureChart = ({ forecast }) => {
             tick={{ fill: "#8e9eab" }}
             unit="°"
             domain={["dataMin - 1", "dataMax + 1"]}
-            tickFormatter={(value) => Math.round(value)}
+            tickFormatter={(value: number) => Math.round(value).toString()}
             width={40}
           />
           <Tooltip

@@ -8,6 +8,32 @@ import clearSkyBg from "./assets/clear-sky.jpg";
 import stormBg from "./assets/storm.jpeg";
 import cloudyBg from "./assets/cloudy.jpg";
 
+interface WeatherData {
+  main: {
+    temp: number;
+    humidity: number;
+    pressure: number;
+    feels_like: number;
+  };
+  weather: Array<{
+    main: string;
+    description: string;
+  }>;
+  wind: {
+    speed: number;
+    deg: number;
+  };
+  name: string;
+  sunrise?: string;
+  sunset?: string;
+  moonphase?: number;
+  uvindex?: number;
+}
+
+interface AppContainerProps {
+  bgImage: string;
+}
+
 // First, add the keyframe animation
 const moveBackground = keyframes`
   0% {
@@ -24,7 +50,7 @@ const moveBackground = keyframes`
   }
 `;
 
-const AppContainer = styled.div`
+const AppContainer = styled.div<AppContainerProps>`
   font-family: Arial, sans-serif;
   position: fixed;
   top: 0;
@@ -75,14 +101,17 @@ const MainContent = styled.div`
   }
 `;
 
-function App() {
-  const [weatherData, setWeatherData] = useState({
+function App(): React.ReactElement {
+  const [weatherData, setWeatherData] = useState<{
+    currentWeather: WeatherData | null;
+    forecast: WeatherData[] | null;
+  }>({
     currentWeather: null,
     forecast: null,
   });
   const [city, setCity] = useState("Vilnius,LT");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchWeatherData = useCallback(async () => {
     setLoading(true);
@@ -124,7 +153,7 @@ function App() {
           moonphase: data.days[0].moonphase,
           uvindex: data.currentConditions.uvindex,
         },
-        forecast: data.days.slice(1, 8).map((day) => ({
+        forecast: data.days.slice(1, 8).map((day: any) => ({
           dt_txt: day.datetime,
           main: {
             temp: day.temp,
@@ -160,7 +189,7 @@ function App() {
     fetchWeatherData();
   }, [fetchWeatherData]);
 
-  const handleSearch = (searchTerm) => {
+  const handleSearch = (searchTerm: string) => {
     setCity(searchTerm);
   };
 

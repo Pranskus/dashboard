@@ -1,6 +1,7 @@
 import React from "react";
 import styled, { keyframes } from "styled-components";
 import { FaSun } from "react-icons/fa";
+import { WeatherData, WeatherForecastProps } from "../types/weather";
 
 import clearSkyBg from "../assets/clear-sky.jpg";
 import cloudyBg from "../assets/cloudy.jpeg";
@@ -36,7 +37,32 @@ const moveBackground = keyframes`
   }
 `;
 
-const ForecastContainer = styled.div`
+interface ForecastContainerProps {
+  singleDay?: boolean;
+}
+
+interface CardProps {
+  selected?: boolean;
+  bgImage?: string;
+}
+
+interface DayProps {
+  current?: boolean;
+}
+
+interface WeatherIconWrapperProps {
+  current?: boolean;
+}
+
+interface TemperatureProps {
+  current?: boolean;
+}
+
+interface ForecastButtonProps {
+  active?: boolean;
+}
+
+const ForecastContainer = styled.div<ForecastContainerProps>`
   display: flex;
   gap: 20px;
   width: 100%;
@@ -58,7 +84,7 @@ const ForecastContainer = styled.div`
     justify-content: center;
   }
 `;
-const Card = styled.div`
+const Card = styled.div<CardProps>`
   background: ${(props) => {
     if (props.selected) {
       return `linear-gradient(rgba(74, 144, 226, 0.4), rgba(53, 122, 189, 0.9)), url(${props.bgImage})`;
@@ -139,7 +165,7 @@ const BottomRow = styled.div`
   width: 100%;
 `;
 
-const Day = styled.h3`
+const Day = styled.h3<DayProps>`
   margin: 0;
   font-size: ${(props) => (props.current ? "1.6rem" : "1rem")};
   font-weight: bold;
@@ -147,7 +173,7 @@ const Day = styled.h3`
   color: white;
 `;
 
-const WeatherIconWrapper = styled.div`
+const WeatherIconWrapper = styled.div<WeatherIconWrapperProps>`
   width: ${(props) => (props.current ? "60px" : "50px")};
   height: ${(props) => (props.current ? "60px" : "50px")};
   animation: ${float} 3s ease-in-out infinite;
@@ -165,7 +191,7 @@ const WeatherIconWrapper = styled.div`
   }
 `;
 
-const Temperature = styled.p`
+const Temperature = styled.p<TemperatureProps>`
   font-size: ${(props) => (props.current ? "2.5rem" : "1.5rem")};
   margin: 0;
   font-weight: bold;
@@ -211,7 +237,7 @@ const StyledSun = styled(FaSun)`
   filter: drop-shadow(0 0 2px rgba(255, 215, 0, 0.5));
 `;
 
-const getWeatherIcon = (condition) => {
+const getWeatherIcon = (condition: string): React.ReactNode => {
   if (!condition) return "🌤";
   const conditions = condition.toLowerCase();
   if (conditions.includes("snow") || conditions.includes("flurries"))
@@ -226,7 +252,7 @@ const getWeatherIcon = (condition) => {
   return "🌤";
 };
 
-const getBackgroundImage = (condition) => {
+const getBackgroundImage = (condition: string): string => {
   if (!condition) return partlyCloudyBg;
 
   const conditions = condition.toLowerCase();
@@ -273,7 +299,7 @@ const ButtonGroup = styled.div`
   }
 `;
 
-const ForecastButton = styled.button`
+const ForecastButton = styled.button<ForecastButtonProps>`
   background: ${(props) =>
     props.active
       ? "linear-gradient(135deg, #4a90e2 0%, #357abd 100%)"
@@ -301,10 +327,10 @@ const ForecastButton = styled.button`
   }
 `;
 
-const WeatherForecast = ({
-  currentWeather = null,
-  forecast = [],
-  onDaySelect = () => {},
+const WeatherForecast: React.FC<WeatherForecastProps> = ({
+  currentWeather,
+  forecast,
+  onDaySelect,
 }) => {
   const [selectedDay, setSelectedDay] = React.useState(0);
   const [forecastType, setForecastType] = React.useState("7days");
@@ -319,7 +345,7 @@ const WeatherForecast = ({
     "Saturday",
   ];
 
-  const handleDaySelect = (index) => {
+  const handleDaySelect = (index: number): void => {
     setSelectedDay(index);
     if (typeof onDaySelect === "function") {
       onDaySelect(index);
@@ -327,7 +353,10 @@ const WeatherForecast = ({
   };
 
   // Modify renderDayCard to handle visibility
-  const renderDayCard = (day, index) => {
+  const renderDayCard = (
+    day: WeatherData,
+    index: number
+  ): React.ReactElement | null => {
     // Hide other cards when showing today or tomorrow
     if (forecastType === "today" && index !== 0) return null;
     if (forecastType === "tomorrow" && index !== 1) return null;
@@ -437,8 +466,12 @@ const WeatherForecast = ({
       <ForecastContainer
         singleDay={forecastType === "today" || forecastType === "tomorrow"}
       >
-        {[currentWeather, ...forecast.slice(0, 6)].map((day, index) =>
-          renderDayCard(day, index)
+        {currentWeather ? (
+          [currentWeather, ...forecast.slice(0, 6)].map((day, index) =>
+            renderDayCard(day, index)
+          )
+        ) : (
+          <div>No weather data available</div>
         )}
       </ForecastContainer>
     </ForecastWrapper>

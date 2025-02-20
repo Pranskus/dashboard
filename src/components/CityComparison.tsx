@@ -2,6 +2,26 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
 
+// Type definitions
+interface CityData {
+  temp: number;
+  conditions: string;
+}
+
+interface CitiesData {
+  [key: string]: CityData;
+}
+
+interface CurrentTime {
+  date: string;
+  time: string;
+}
+
+interface CityComparisonProps {
+  hideTitle?: boolean;
+  currentCity?: string;
+}
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -89,7 +109,7 @@ const LoadingText = styled.div`
   font-size: 1rem;
 `;
 
-const CITIES_BY_COUNTRY = {
+const CITIES_BY_COUNTRY: { [key: string]: string[] } = {
   LT: ["Vilnius,LT", "Kaunas,LT", "Klaipėda,LT"],
   US: ["New York,US", "Los Angeles,US", "Chicago,US"],
   GB: ["London,GB", "Birmingham,GB", "Manchester,GB"],
@@ -125,19 +145,22 @@ const CITIES_BY_COUNTRY = {
   LV: ["Riga,LV", "Daugavpils,LV", "Liepāja,LV"],
 };
 
-const DEFAULT_COUNTRY = "LT"; // Default to Lithuanian cities
+const DEFAULT_COUNTRY = "LT";
 
-const CityComparison = ({ hideTitle, currentCity }) => {
-  const [citiesData, setCitiesData] = useState({});
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [currentTime, setCurrentTime] = useState({
+const CityComparison: React.FC<CityComparisonProps> = ({
+  hideTitle,
+  currentCity,
+}) => {
+  const [citiesData, setCitiesData] = useState<CitiesData>({});
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [currentTime, setCurrentTime] = useState<CurrentTime>({
     date: "",
     time: "",
   });
-  const [selectedCountry, setSelectedCountry] = useState(DEFAULT_COUNTRY);
+  const [selectedCountry, setSelectedCountry] =
+    useState<string>(DEFAULT_COUNTRY);
 
-  // Update selected country when currentCity changes
   useEffect(() => {
     if (currentCity) {
       const countryCode = currentCity.split(",")[1]?.trim();
@@ -147,15 +170,14 @@ const CityComparison = ({ hideTitle, currentCity }) => {
     }
   }, [currentCity]);
 
-  // Get the cities to display based on the selected country
-  const getCitiesToDisplay = () => {
+  const getCitiesToDisplay = (): string[] => {
     return (
       CITIES_BY_COUNTRY[selectedCountry] || CITIES_BY_COUNTRY[DEFAULT_COUNTRY]
     );
   };
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchData = async (): Promise<void> => {
       setLoading(true);
       try {
         const API_KEY = "6PNY9WT9YSL482LUA525EZL8L";
@@ -168,7 +190,7 @@ const CityComparison = ({ hideTitle, currentCity }) => {
         );
 
         const responses = await Promise.all(requests);
-        const data = {};
+        const data: CitiesData = {};
         responses.forEach((response, index) => {
           data[citiesToFetch[index]] = {
             temp: response.currentConditions.temp,
@@ -178,7 +200,6 @@ const CityComparison = ({ hideTitle, currentCity }) => {
 
         setCitiesData(data);
 
-        // Set current time
         const now = new Date();
         setCurrentTime({
           date: now.toLocaleDateString("en-GB", {
@@ -200,9 +221,9 @@ const CityComparison = ({ hideTitle, currentCity }) => {
     };
 
     fetchData();
-  }, [selectedCountry]); // Fetch data when selected country changes
+  }, [selectedCountry]);
 
-  const getWeatherIcon = (condition) => {
+  const getWeatherIcon = (condition: string | undefined): string => {
     if (!condition) return "🌤";
     const conditions = condition.toLowerCase();
     if (conditions.includes("snow") || conditions.includes("flurries"))

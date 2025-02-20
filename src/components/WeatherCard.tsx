@@ -2,6 +2,23 @@ import React from "react";
 import styled from "styled-components";
 import { WiDaySunny, WiStrongWind } from "react-icons/wi";
 
+interface WeatherData {
+  main: {
+    temp: number;
+    feels_like: number;
+    pressure: number;
+    humidity: number;
+  };
+  wind: {
+    speed: number;
+  };
+  dt: number;
+}
+
+interface WeatherCardProps {
+  currentWeather: WeatherData;
+}
+
 const Card = styled.div`
   background-color: #2c2c2c;
   border-radius: 10px;
@@ -42,7 +59,7 @@ const DetailItem = styled.p`
   margin: 5px 0;
 `;
 
-function WeatherCard({ currentWeather }) {
+function WeatherCard({ currentWeather }: WeatherCardProps): React.ReactElement {
   const { main, wind, dt } = currentWeather;
   const date = new Date(dt * 1000);
 

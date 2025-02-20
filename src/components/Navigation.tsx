@@ -1,6 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 
+interface NavigationProps {
+  // Add any props if needed
+}
+
 const NavContainer = styled.nav`
   display: flex;
   align-items: center;
@@ -53,7 +57,7 @@ const SearchInput = styled.input`
   }
 `;
 
-const Navigation = () => {
+const Navigation = ({}: NavigationProps): React.ReactElement => {
   return (
     <NavContainer>
       <LocationInfo>

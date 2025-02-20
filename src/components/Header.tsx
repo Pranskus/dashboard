@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import { debounce } from "lodash";
+import debounce from "lodash/debounce";
 import { MdLocationOn, MdSearch } from "react-icons/md";
 
 const MaxWidthWrapper = styled.div`
@@ -132,12 +132,24 @@ const SuggestionItem = styled.li`
   }
 `;
 
-function Header({ onSearch, currentCity }) {
+interface CityLocation {
+  name: string;
+  country: string;
+  lat: number;
+  lon: number;
+}
+
+interface HeaderProps {
+  onSearch: (searchTerm: string) => void;
+  currentCity: string;
+}
+
+function Header({ onSearch, currentCity }: HeaderProps): React.ReactElement {
   const [searchTerm, setSearchTerm] = useState("");
-  const [suggestions, setSuggestions] = useState([]);
+  const [suggestions, setSuggestions] = useState<CityLocation[]>([]);
 
   const fetchSuggestions = useCallback(
-    debounce(async (input) => {
+    debounce(async (input: string) => {
       if (input.length < 3) {
         setSuggestions([]);
         return;
@@ -145,7 +157,7 @@ function Header({ onSearch, currentCity }) {
 
       try {
         const API_KEY = process.env.REACT_APP_OPENWEATHERMAP_API_KEY;
-        const response = await axios.get(
+        const response = await axios.get<CityLocation[]>(
           `https://api.openweathermap.org/geo/1.0/direct?q=${input}&limit=5&appid=${API_KEY}`
         );
         if (response.data.length > 0) {
@@ -164,7 +176,7 @@ function Header({ onSearch, currentCity }) {
     fetchSuggestions(searchTerm);
   }, [searchTerm, fetchSuggestions]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (searchTerm.trim()) {
       onSearch(searchTerm);
@@ -173,7 +185,7 @@ function Header({ onSearch, currentCity }) {
     }
   };
 
-  const handleSuggestionClick = (suggestion) => {
+  const handleSuggestionClick = (suggestion: CityLocation) => {
     const cityName = `${suggestion.name},${suggestion.country}`;
     onSearch(cityName);
     setSearchTerm("");

@@ -9,7 +9,23 @@ import {
   WiWindDeg,
 } from "react-icons/wi";
 
-const getSafeValue = (value, defaultValue = "N/A") => {
+// Type definitions
+interface CelestialData {
+  sunrise?: string;
+  sunset?: string;
+  moonphase?: number;
+  uvindex?: number;
+  wind?: {
+    speed: number;
+    deg: number;
+  };
+}
+
+interface CelestialInfoProps {
+  data: CelestialData;
+}
+
+const getSafeValue = (value: any, defaultValue: string = "N/A"): string => {
   return value !== undefined && value !== null ? value : defaultValue;
 };
 
@@ -160,23 +176,21 @@ const Value = styled.span`
   }
 `;
 
-const getMoonPhaseIcon = (phase) => {
-  // Moon phase is a value between 0 and 1
-  if (phase === 0 || phase === 1) return "🌑"; // New Moon
-  if (phase < 0.25) return "🌒"; // Waxing Crescent
-  if (phase === 0.25) return "🌓"; // First Quarter
-  if (phase < 0.5) return "🌔"; // Waxing Gibbous
-  if (phase === 0.5) return "🌕"; // Full Moon
-  if (phase < 0.75) return "🌖"; // Waning Gibbous
-  if (phase === 0.75) return "🌗"; // Last Quarter
-  return "🌘"; // Waning Crescent
+const getMoonPhaseIcon = (phase: number | undefined): string => {
+  if (phase === undefined) return "🌑";
+  if (phase === 0 || phase === 1) return "🌑";
+  if (phase < 0.25) return "🌒";
+  if (phase === 0.25) return "🌓";
+  if (phase < 0.5) return "🌔";
+  if (phase === 0.5) return "🌕";
+  if (phase < 0.75) return "🌖";
+  if (phase === 0.75) return "🌗";
+  return "🌘";
 };
 
-// Update the formatTime function
-const formatTime = (timeStr) => {
+const formatTime = (timeStr: string | undefined): string => {
   if (!timeStr) return "N/A";
   try {
-    // Visual Crossing provides time in "HH:MM:SS" format
     const [hours, minutes] = timeStr.split(":");
     const date = new Date();
     date.setHours(parseInt(hours, 10));
@@ -197,10 +211,10 @@ const Title = styled.h2`
   color: white;
   margin: 0;
   font-size: 1.2rem;
-  padding: 0 10px; // Remove this padding
+  padding: 0 10px;
 `;
 
-const CelestialInfo = ({ data }) => {
+const CelestialInfo: React.FC<CelestialInfoProps> = ({ data }) => {
   if (!data) {
     return (
       <>
@@ -213,7 +227,7 @@ const CelestialInfo = ({ data }) => {
   const windSpeed = data.wind?.speed || 0;
   const windDirection = data.wind?.deg || 0;
 
-  const getWindDirection = (degrees) => {
+  const getWindDirection = (degrees: number | undefined): string => {
     if (degrees === undefined || degrees === null) return "N/A";
     const directions = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
     const index = Math.round((degrees % 360) / 45) % 8;
@@ -242,7 +256,7 @@ const CelestialInfo = ({ data }) => {
 
         <InfoCard>
           <IconWrapper style={{ fontSize: "2rem" }}>
-            {getMoonPhaseIcon(getSafeValue(data.moonphase, 0))}
+            {getMoonPhaseIcon(data.moonphase)}
           </IconWrapper>
           <Label>Moon Phase</Label>
           <Value>

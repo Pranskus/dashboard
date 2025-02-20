@@ -22,7 +22,18 @@ const Temperature = styled.p`
   font-size: 1.5rem;
 `;
 
-function ForecastCard({ forecast }) {
+interface ForecastData {
+  main: {
+    temp: number;
+  };
+  dt_txt: string;
+}
+
+interface ForecastCardProps {
+  forecast: ForecastData;
+}
+
+function ForecastCard({ forecast }: ForecastCardProps): React.ReactElement {
   const { main, dt_txt } = forecast;
   const date = new Date(dt_txt);
 
