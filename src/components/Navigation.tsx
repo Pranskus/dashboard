@@ -1,9 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-interface NavigationProps {
-  // Add any props if needed
-}
+interface NavigationProps {}
 
 const NavContainer = styled.nav`
   display: flex;

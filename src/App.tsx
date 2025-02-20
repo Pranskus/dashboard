@@ -169,7 +169,7 @@ function App(): React.ReactElement {
           ],
           wind: {
             speed: day.windspeed,
-            deg: day.winddir, // Add wind direction for forecast days
+            deg: day.winddir,
           },
           sunrise: day.sunrise,
           sunset: day.sunset,
